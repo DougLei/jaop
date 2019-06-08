@@ -9,8 +9,8 @@ import com.douglei.ProxyInterceptor;
  */
 public class LogProxy extends ProxyInterceptor {
 
-	public LogProxy(Class<?> clz, Method method) {
-		super(clz, method);
+	public LogProxy(Method method) {
+		super(method);
 	}
 
 	@Override

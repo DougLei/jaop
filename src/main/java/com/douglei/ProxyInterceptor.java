@@ -7,11 +7,9 @@ import java.lang.reflect.Method;
  * @author DougLei
  */
 public abstract class ProxyInterceptor {
-	protected Class<?> clz;
 	protected Method method;
 	
-	public ProxyInterceptor(Class<?> clz, Method method) {
-		this.clz = clz;
+	public ProxyInterceptor(Method method) {
 		this.method = method;
 	}
 	
@@ -27,9 +25,6 @@ public abstract class ProxyInterceptor {
 		t.printStackTrace();
 	}
 	
-	public Class<?> getClz() {
-		return clz;
-	}
 	public Method getMethod() {
 		return method;
 	}
