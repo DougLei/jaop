@@ -14,10 +14,10 @@ import net.sf.cglib.proxy.MethodProxy;
  * @author DougLei
  */
 class ProxyBeanFactory {
-	private ProxyBean proxyWrapper;
+	private ProxyBean proxyBean;
 
-	public ProxyBean getProxyWrapper() {
-		return proxyWrapper;
+	public ProxyBean getProxyBean() {
+		return proxyBean;
 	}
 	
 	/**
@@ -28,7 +28,7 @@ class ProxyBeanFactory {
 	 */
 	public <T> T createProxy(Class<T> clz, Object object) {
 		T proxy = newProxyInstance(clz, object);
-		proxyWrapper = new ProxyBean(object, proxy);
+		proxyBean = new ProxyBean(object, proxy);
 		return (T) proxy;
 	}
 	
@@ -56,12 +56,12 @@ class ProxyBeanFactory {
 	
 	private Object coreInvoke(Object obj, Method method, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Object result = null;
-		if(proxyWrapper.before(obj, method, args)) {
+		if(proxyBean.before(obj, method, args)) {
 			try {
 				result = method.invoke(obj, args);
-				result = proxyWrapper.after(obj, method, args, result);
+				result = proxyBean.after(obj, method, args, result);
 			} catch (Exception e) {
-				proxyWrapper.exception(obj, method, args, e);
+				proxyBean.exception(obj, method, args, e);
 			}
 		}
 		return result;

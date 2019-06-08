@@ -13,29 +13,30 @@ public class ProxyBeanContext {
 	private static final Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>();
 	
 	// ---------------------------------------------------------------------------------------
-	// create proxy
+	// 创建代理Bean
 	// ---------------------------------------------------------------------------------------
-	public static void createProxy(Class<?> clz) {
-		createProxy(clz, ConstructorUtil.newInstance(clz));
+	public static void createProxyBean(Class<?> clz, ProxyInterceptor... interceptors) {
+		createProxyBean(clz, ConstructorUtil.newInstance(clz), interceptors);
 	}
 	
-	public static void createProxy(Object object) {
-		createProxy(object.getClass(), object);
+	public static void createProxyBean(Object object, ProxyInterceptor... interceptors) {
+		createProxyBean(object.getClass(), object, interceptors);
 	}
 	
-	public static void createProxy(Class<?> clz, Object object) {
+	public static void createProxyBean(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
 		String clzName = clz.getName();
-		ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
-		if(pw == null) {
-			ProxyBeanFactory pbf = new ProxyBeanFactory();
-			pbf.createProxy(clz, object);
-			pw = pbf.getProxyWrapper();
-			PROXY_BEAN_MAP.put(clzName, pw);
+		if(PROXY_BEAN_MAP.containsKey(clzName)) {
+			throw new RepeatedProxyException(clzName);
 		}
+		ProxyBeanFactory pbf = new ProxyBeanFactory();
+		pbf.createProxy(clz, object);
+		PROXY_BEAN_MAP.put(clzName, pbf.getProxyBean());
+		
+		addInterceptor(clz, interceptors);
 	}
 	
 	// ---------------------------------------------------------------------------------------
-	// get proxy
+	// 获取代理对象
 	// ---------------------------------------------------------------------------------------
 	public static <T> T getProxy(Class<T> clz) {
 		return getProxy(clz, ConstructorUtil.newInstance(clz));
@@ -53,38 +54,46 @@ public class ProxyBeanContext {
 		if(pw == null) {
 			ProxyBeanFactory pbf = new ProxyBeanFactory();
 			pbf.createProxy(clz, object);
-			pw = pbf.getProxyWrapper();
+			pw = pbf.getProxyBean();
 			PROXY_BEAN_MAP.put(clzName, pw);
 		}
 		return (T) pw.getProxy();
 	}
 
 	// ---------------------------------------------------------------------------------------
-	// interceptor
+	// 添加/删除 interceptor
 	// ---------------------------------------------------------------------------------------
-	public static void addInterceptor(Object object, ProxyInterceptor proxyInterceptor) {
-		addInterceptor(object.getClass(), proxyInterceptor);
+	public static void addInterceptor(Object object, ProxyInterceptor... interceptors) {
+		addInterceptor(object.getClass(), interceptors);
 	}
 	
-	public static void addInterceptor(Class<?> clz, ProxyInterceptor proxyInterceptor) {
-		String clzName = clz.getName();
-		ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
-		if(pw == null) {
-			throw new NotProxyBeanException(clzName);
+	public static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
+		if(interceptors != null && interceptors.length > 0) {
+			String clzName = clz.getName();
+			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
+			if(pw == null) {
+				throw new NotExistsProxyBeanException(clzName);
+			}
+			for (ProxyInterceptor interceptor : interceptors) {
+				pw.addInterceptor(interceptor);
+			}
 		}
-		pw.addProxyInterceptor(proxyInterceptor);
 	}
 	
-	public static void removeInterceptor(Object object, ProxyInterceptor proxyInterceptor) {
-		removeInterceptor(object.getClass(), proxyInterceptor);
+	public static void removeInterceptor(Object object, ProxyInterceptor... interceptors) {
+		removeInterceptor(object.getClass(), interceptors);
 	}
 	
-	public static void removeInterceptor(Class<?> clz, ProxyInterceptor proxyInterceptor) {
-		String clzName = clz.getName();
-		ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
-		if(pw == null) {
-			throw new NotProxyBeanException(clzName);
+	public static void removeInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
+		if(interceptors != null && interceptors.length > 0) {
+			String clzName = clz.getName();
+			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
+			if(pw == null) {
+				throw new NotExistsProxyBeanException(clzName);
+			}
+			for (ProxyInterceptor interceptor : interceptors) {
+				pw.removeInterceptor(interceptor);
+			}
 		}
-		pw.addProxyInterceptor(proxyInterceptor);
 	}
 }

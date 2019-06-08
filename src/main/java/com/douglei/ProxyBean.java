@@ -50,7 +50,7 @@ class ProxyBean {
 		}
 	}
 	
-	public void addProxyInterceptor(ProxyInterceptor proxyInterceptor) {
+	public void addInterceptor(ProxyInterceptor proxyInterceptor) {
 		if(interceptors == null) {
 			interceptors = new ArrayList<ProxyInterceptor>();
 		}else if(interceptors.contains(proxyInterceptor)) {
@@ -60,7 +60,7 @@ class ProxyBean {
 	}
 	
 	public void removeInterceptor(ProxyInterceptor proxyInterceptor) {
-		if(interceptors != null) {
+		if(interceptors != null && interceptors.size() > 0) {
 			interceptors.remove(proxyInterceptor);
 		}
 	}
