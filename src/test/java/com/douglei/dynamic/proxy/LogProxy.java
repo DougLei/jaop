@@ -1,7 +1,8 @@
 package com.douglei.dynamic.proxy;
 
 import java.lang.reflect.Method;
-import com.douglei.ProxyInterceptor;
+
+import com.douglei.aop.ProxyInterceptor;
 
 /**
  * 

@@ -1,4 +1,4 @@
-package com.douglei;
+package com.douglei.aop;
 
 import java.lang.reflect.Method;
 

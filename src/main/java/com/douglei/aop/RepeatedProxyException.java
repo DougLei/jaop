@@ -1,4 +1,4 @@
-package com.douglei;
+package com.douglei.aop;
 
 /**
  * 重复的Proxy异常

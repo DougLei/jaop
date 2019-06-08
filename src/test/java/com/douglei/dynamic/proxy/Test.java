@@ -1,6 +1,6 @@
 package com.douglei.dynamic.proxy;
 
-import com.douglei.ProxyBeanContext;
+import com.douglei.aop.ProxyBeanContext;
 import com.douglei.dynamic.proxy.jdk.ServiceImpl;
 
 public class Test {
