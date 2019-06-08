@@ -13,7 +13,29 @@ public class ProxyBeanContext {
 	private static final Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>();
 	
 	// ---------------------------------------------------------------------------------------
-	// interceptor
+	// create proxy
+	// ---------------------------------------------------------------------------------------
+	public static void createProxy(Class<?> clz) {
+		createProxy(clz, ConstructorUtil.newInstance(clz));
+	}
+	
+	public static void createProxy(Object object) {
+		createProxy(object.getClass(), object);
+	}
+	
+	public static void createProxy(Class<?> clz, Object object) {
+		String clzName = clz.getName();
+		ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
+		if(pw == null) {
+			ProxyBeanFactory pbf = new ProxyBeanFactory();
+			pbf.createProxy(clz, object);
+			pw = pbf.getProxyWrapper();
+			PROXY_BEAN_MAP.put(clzName, pw);
+		}
+	}
+	
+	// ---------------------------------------------------------------------------------------
+	// get proxy
 	// ---------------------------------------------------------------------------------------
 	public static <T> T getProxy(Class<T> clz) {
 		return getProxy(clz, ConstructorUtil.newInstance(clz));
