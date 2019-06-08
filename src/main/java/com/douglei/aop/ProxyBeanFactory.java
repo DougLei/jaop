@@ -54,16 +54,17 @@ class ProxyBeanFactory {
 		}
 	}
 	
-	private Object coreInvoke(Object obj, Method method, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Object result = null;
-		if(proxyBean.before(obj, method, args)) {
-			try {
-				result = method.invoke(obj, args);
-				result = proxyBean.after(obj, method, args, result);
-			} catch (Exception e) {
-				proxyBean.exception(obj, method, args, e);
+	private Object coreInvoke(Object originObject, Method method, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		try {
+			if(proxyBean.before(originObject, method, args)) {
+				Object result = method.invoke(originObject, args);
+				return proxyBean.after(originObject, method, args, result);
 			}
+		} catch (Exception e) {
+			proxyBean.exception(originObject, method, args, e);
+		}finally {
+			proxyBean.finally_(originObject, method, args);
 		}
-		return result;
+		return null;
 	}
 }
