@@ -1,6 +1,7 @@
 package com.douglei.aop;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.douglei.utils.reflect.ConstructorUtil;
@@ -24,6 +25,24 @@ public class ProxyBeanContext {
 	}
 	
 	public static void createProxyBean(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
+		createProxyBean(clz, object);
+		addInterceptor(clz, interceptors);
+	}
+	
+	public static void createProxyBean(Class<?> clz, List<ProxyInterceptor> interceptors) {
+		createProxyBean(clz, ConstructorUtil.newInstance(clz), interceptors);
+	}
+	
+	public static void createProxyBean(Object object, List<ProxyInterceptor> interceptors) {
+		createProxyBean(object.getClass(), object, interceptors);
+	}
+	
+	public static void createProxyBean(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
+		createProxyBean(clz, object);
+		addInterceptor(clz, interceptors);
+	}
+	
+	private static void createProxyBean(Class<?> clz, Object object) {
 		String clzName = clz.getName();
 		if(PROXY_BEAN_MAP.containsKey(clzName)) {
 			throw new RepeatedProxyException(clzName);
@@ -31,8 +50,6 @@ public class ProxyBeanContext {
 		ProxyBeanFactory pbf = new ProxyBeanFactory();
 		pbf.createProxy(clz, object);
 		PROXY_BEAN_MAP.put(clzName, pbf.getProxyBean());
-		
-		addInterceptor(clz, interceptors);
 	}
 	
 	// ---------------------------------------------------------------------------------------
@@ -56,7 +73,7 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 添加/删除 interceptor
 	// ---------------------------------------------------------------------------------------
-	private static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
+	public static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
 		if(interceptors != null && interceptors.length > 0) {
 			String clzName = clz.getName();
 			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
@@ -66,6 +83,17 @@ public class ProxyBeanContext {
 			for (ProxyInterceptor interceptor : interceptors) {
 				pw.addInterceptor(interceptor);
 			}
+		}
+	}
+	
+	public static void addInterceptor(Class<?> clz, List<ProxyInterceptor> interceptors) {
+		if(interceptors != null && interceptors.size() > 0) {
+			String clzName = clz.getName();
+			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
+			if(pw == null) {
+				throw new NotExistsProxyBeanException(clzName);
+			}
+			pw.setInterceptors(interceptors);
 		}
 	}
 	

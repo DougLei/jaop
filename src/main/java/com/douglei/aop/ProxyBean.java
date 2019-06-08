@@ -74,4 +74,7 @@ class ProxyBean {
 	public List<ProxyInterceptor> getInterceptors() {
 		return interceptors;
 	}
+	public void setInterceptors(List<ProxyInterceptor> interceptors) {
+		this.interceptors = interceptors;
+	}
 }
