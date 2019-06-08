@@ -38,24 +38,17 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 获取代理对象
 	// ---------------------------------------------------------------------------------------
-	public static <T> T getProxy(Class<T> clz) {
-		return getProxy(clz, ConstructorUtil.newInstance(clz));
-	}
-	
 	@SuppressWarnings("unchecked")
 	public static <T> T getProxy(Object object) {
-		return (T) getProxy(object.getClass(), object);
+		return (T) getProxy(object.getClass());
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T getProxy(Class<T> clz, Object object) {
+	public static <T> T getProxy(Class<T> clz) {
 		String clzName = clz.getName();
 		ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
 		if(pw == null) {
-			ProxyBeanFactory pbf = new ProxyBeanFactory();
-			pbf.createProxy(clz, object);
-			pw = pbf.getProxyBean();
-			PROXY_BEAN_MAP.put(clzName, pw);
+			throw new NotExistsProxyBeanException(clzName);
 		}
 		return (T) pw.getProxy();
 	}
@@ -63,11 +56,7 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 添加/删除 interceptor
 	// ---------------------------------------------------------------------------------------
-	public static void addInterceptor(Object object, ProxyInterceptor... interceptors) {
-		addInterceptor(object.getClass(), interceptors);
-	}
-	
-	public static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
+	private static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
 		if(interceptors != null && interceptors.length > 0) {
 			String clzName = clz.getName();
 			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
@@ -80,20 +69,20 @@ public class ProxyBeanContext {
 		}
 	}
 	
-	public static void removeInterceptor(Object object, ProxyInterceptor... interceptors) {
-		removeInterceptor(object.getClass(), interceptors);
-	}
-	
-	public static void removeInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
-		if(interceptors != null && interceptors.length > 0) {
-			String clzName = clz.getName();
-			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
-			if(pw == null) {
-				throw new NotExistsProxyBeanException(clzName);
-			}
-			for (ProxyInterceptor interceptor : interceptors) {
-				pw.removeInterceptor(interceptor);
-			}
-		}
-	}
+//	public static void removeInterceptor(Object object, ProxyInterceptor... interceptors) {
+//		removeInterceptor(object.getClass(), interceptors);
+//	}
+//	
+//	public static void removeInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
+//		if(interceptors != null && interceptors.length > 0) {
+//			String clzName = clz.getName();
+//			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
+//			if(pw == null) {
+//				throw new NotExistsProxyBeanException(clzName);
+//			}
+//			for (ProxyInterceptor interceptor : interceptors) {
+//				pw.removeInterceptor(interceptor);
+//			}
+//		}
+//	}
 }
