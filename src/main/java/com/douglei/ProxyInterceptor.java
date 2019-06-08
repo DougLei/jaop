@@ -15,16 +15,16 @@ public abstract class ProxyInterceptor {
 		this.method = method;
 	}
 	
-	protected boolean before(Method method, Object[] args) {
+	protected boolean before(Object obj, Method method, Object[] args) {
 		return true;
 	}
 
-	protected Object after(Object result) {
+	protected Object after(Object obj, Method method, Object[] args, Object result) {
 		return result;
 	}
 	
-	protected Object exception(Object result, Throwable t) {
-		return result;
+	protected void exception(Object obj, Method method, Object[] args, Throwable t) {
+		t.printStackTrace();
 	}
 	
 	public Class<?> getClz() {

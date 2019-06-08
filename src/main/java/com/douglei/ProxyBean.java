@@ -18,10 +18,10 @@ class ProxyBean {
 		this.proxy = proxy;
 	}
 	
-	public boolean before(Method method, Object[] args) {
+	public boolean before(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethod().equals(method) && !interceptor.before(method, args)) {
+				if(interceptor.getMethod().equals(method) && !interceptor.before(obj, method, args)) {
 					return false;
 				}
 			}
@@ -29,26 +29,25 @@ class ProxyBean {
 		return true;
 	}
 
-	public Object after(Method method, Object result) {
+	public Object after(Object obj, Method method, Object[] args, Object result) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethod().equals(method)) {
-					result = interceptor.after(result);
+					result = interceptor.after(obj, method, args, result);
 				}
 			}
 		}
 		return result;
 	}
 
-	public Object exception(Method method, Object result, Throwable t) {
+	public void exception(Object obj, Method method, Object[] args, Throwable t) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethod().equals(method)) {
-					result = interceptor.exception(result, t);
+					interceptor.exception(obj, method, args, t);
 				}
 			}
 		}
-		return result;
 	}
 	
 	public void addProxyInterceptor(ProxyInterceptor proxyInterceptor) {

@@ -56,12 +56,12 @@ class ProxyBeanFactory {
 	
 	private Object coreInvoke(Object obj, Method method, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Object result = null;
-		if(proxyWrapper.before(method, args)) {
+		if(proxyWrapper.before(obj, method, args)) {
 			try {
 				result = method.invoke(obj, args);
-				result = proxyWrapper.after(method, result);
+				result = proxyWrapper.after(obj, method, args, result);
 			} catch (Exception e) {
-				result = proxyWrapper.exception(method, result, e);
+				proxyWrapper.exception(obj, method, args, e);
 			}
 		}
 		return result;
