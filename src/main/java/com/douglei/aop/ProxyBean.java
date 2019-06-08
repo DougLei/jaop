@@ -21,7 +21,7 @@ class ProxyBean {
 	public boolean before(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethod().equals(method) && !interceptor.before(obj, method, args)) {
+				if(interceptor.getMethods().contains(method) && !interceptor.before(obj, method, args)) {
 					return false;
 				}
 			}
@@ -32,7 +32,7 @@ class ProxyBean {
 	public Object after(Object obj, Method method, Object[] args, Object result) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethod().equals(method)) {
+				if(interceptor.getMethods().contains(method)) {
 					result = interceptor.after(obj, method, args, result);
 				}
 			}
@@ -43,7 +43,7 @@ class ProxyBean {
 	public void exception(Object obj, Method method, Object[] args, Throwable t) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethod().equals(method)) {
+				if(interceptor.getMethods().contains(method)) {
 					interceptor.exception(obj, method, args, t);
 				}
 			}
