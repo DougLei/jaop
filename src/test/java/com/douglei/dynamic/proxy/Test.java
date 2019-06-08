@@ -1,13 +1,14 @@
 package com.douglei.dynamic.proxy;
 
 import com.douglei.ProxyBeanContext;
-import com.douglei.dynamic.proxy.cglib.Service;
+import com.douglei.dynamic.proxy.jdk.IService;
+import com.douglei.dynamic.proxy.jdk.ServiceImpl;
 
 public class Test {
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException {
-		Service service = ProxyBeanContext.getProxy(Service.class);
+		IService service = ProxyBeanContext.getProxy(ServiceImpl.class);
 		
-		ProxyBeanContext.addInterceptor(Service.class, new LogProxy(Service.class, Service.class.getDeclaredMethod("add")));
+		ProxyBeanContext.addInterceptor(ServiceImpl.class, new LogProxy(ServiceImpl.class, ServiceImpl.class.getDeclaredMethod("add")));
 		
 		
 		service.add();
