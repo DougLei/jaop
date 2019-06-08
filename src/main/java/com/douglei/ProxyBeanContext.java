@@ -10,7 +10,7 @@ import com.douglei.utils.reflect.ConstructorUtil;
  * @author DougLei
  */
 public class ProxyBeanContext {
-	private static final Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>(16);
+	private static final Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>();
 	
 	// ---------------------------------------------------------------------------------------
 	// interceptor

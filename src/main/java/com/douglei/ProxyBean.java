@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author DougLei
  */
-public class ProxyBean {
+class ProxyBean {
 	private Object object;// 被代理的目标对象
 	private Object proxy;// 代理对象
 	private List<ProxyInterceptor> interceptors;// 代理拦截器链

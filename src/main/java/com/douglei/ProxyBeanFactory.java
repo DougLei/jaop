@@ -13,7 +13,7 @@ import net.sf.cglib.proxy.MethodProxy;
  * 
  * @author DougLei
  */
-public class ProxyBeanFactory {
+class ProxyBeanFactory {
 	private ProxyBean proxyWrapper;
 
 	public ProxyBean getProxyWrapper() {
