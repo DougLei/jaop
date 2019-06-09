@@ -60,7 +60,7 @@ class ProxyBeanFactory {
 				Object result = method.invoke(originObject, args);
 				return proxyBean.after(originObject, method, args, result);
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			proxyBean.exception(originObject, method, args, e);
 		}finally {
 			proxyBean.finally_(originObject, method, args);

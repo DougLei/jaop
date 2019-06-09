@@ -38,8 +38,9 @@ public abstract class ProxyInterceptor {
 	 * @param args
 	 * @param result
 	 * @return
+	 * @throws Throwable
 	 */
-	protected Object after(Object obj, Method method, Object[] args, Object result) {
+	protected Object after(Object obj, Method method, Object[] args, Object result) throws Throwable{
 		return result;
 	}
 	

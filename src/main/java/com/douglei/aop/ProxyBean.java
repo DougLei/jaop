@@ -29,7 +29,7 @@ class ProxyBean {
 		return true;
 	}
 
-	public Object after(Object obj, Method method, Object[] args, Object result) {
+	public Object after(Object obj, Method method, Object[] args, Object result) throws Throwable {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethods() == null ||  interceptor.getMethods().contains(method)) {
