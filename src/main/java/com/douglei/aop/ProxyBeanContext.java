@@ -73,7 +73,7 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 添加/删除 interceptor
 	// ---------------------------------------------------------------------------------------
-	private static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
+	public static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
 		if(interceptors != null && interceptors.length > 0) {
 			String clzName = clz.getName();
 			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
@@ -86,7 +86,7 @@ public class ProxyBeanContext {
 		}
 	}
 	
-	private static void addInterceptor(Class<?> clz, List<ProxyInterceptor> interceptors) {
+	public static void addInterceptor(Class<?> clz, List<ProxyInterceptor> interceptors) {
 		if(interceptors != null && interceptors.size() > 0) {
 			String clzName = clz.getName();
 			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
@@ -96,7 +96,7 @@ public class ProxyBeanContext {
 			pw.setInterceptors(interceptors);
 		}
 	}
-	
+
 //	public static void removeInterceptor(Object object, ProxyInterceptor... interceptors) {
 //		removeInterceptor(object.getClass(), interceptors);
 //	}
@@ -113,4 +113,11 @@ public class ProxyBeanContext {
 //			}
 //		}
 //	}
+	
+	// ---------------------------------------------------------------------------------------
+	// 
+	// ---------------------------------------------------------------------------------------
+	public static Map<String, ProxyBean> getProxyBeanMap() {
+		return PROXY_BEAN_MAP;
+	}
 }
