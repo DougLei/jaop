@@ -1,5 +1,6 @@
 package com.douglei.aop;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,7 +118,7 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 
 	// ---------------------------------------------------------------------------------------
-	public static Map<String, ProxyBean> getProxyBeanMap() {
-		return PROXY_BEAN_MAP;
+	public static Collection<ProxyBean> getProxyBeans() {
+		return PROXY_BEAN_MAP.values();
 	}
 }
