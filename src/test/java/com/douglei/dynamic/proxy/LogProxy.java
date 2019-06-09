@@ -21,7 +21,7 @@ public class LogProxy extends ProxyInterceptor {
 	@Override
 	protected boolean before(Object obj, Method method, Object[] args) {
 		System.out.println("开始执行, 判断有没有注解");
-		Transaction t = method.getAnnotation(Transaction.class);
+		TransactionTest t = method.getAnnotation(TransactionTest.class);
 		if(t == null) {
 			System.out.println("没有注解, 不执行");
 			return false;

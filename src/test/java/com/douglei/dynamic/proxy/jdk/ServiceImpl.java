@@ -1,18 +1,18 @@
 package com.douglei.dynamic.proxy.jdk;
 
 import com.douglei.aop.ProxyBeanContext;
-import com.douglei.dynamic.proxy.Transaction;
+import com.douglei.dynamic.proxy.TransactionTest;
 
 public class ServiceImpl implements IService {
 
-	@Transaction
+	@TransactionTest
 	@Override
 	public void add() {
 		System.out.println("ServiceImpl.add()");
 		ProxyBeanContext.getProxy(ServiceImpl.class).delete();
 	}
 
-	@Transaction
+	@TransactionTest
 	@Override
 	public void delete() {
 		System.out.println("ServiceImpl.delete()");
