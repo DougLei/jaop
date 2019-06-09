@@ -1,6 +1,6 @@
-package com.douglei.dynamic.proxy.cglib;
+package com.douglei.aop.dynamic.proxy.cglib;
 
-import com.douglei.dynamic.proxy.TransactionTest;
+import com.douglei.aop.dynamic.proxy.TransactionTest;
 
 public class Service {
 	

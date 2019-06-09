@@ -1,7 +1,7 @@
-package com.douglei.dynamic.proxy.jdk;
+package com.douglei.aop.dynamic.proxy.jdk;
 
 import com.douglei.aop.ProxyBeanContext;
-import com.douglei.dynamic.proxy.TransactionTest;
+import com.douglei.aop.dynamic.proxy.TransactionTest;
 
 public class ServiceImpl implements IService {
 

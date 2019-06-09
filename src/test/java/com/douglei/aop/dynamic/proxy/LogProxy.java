@@ -1,4 +1,4 @@
-package com.douglei.dynamic.proxy;
+package com.douglei.aop.dynamic.proxy;
 
 import java.lang.reflect.Method;
 import java.util.List;

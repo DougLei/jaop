@@ -1,4 +1,4 @@
-package com.douglei.dynamic.proxy.cglib;
+package com.douglei.aop.dynamic.proxy.cglib;
 
 import net.sf.cglib.proxy.Enhancer;
 

@@ -1,4 +1,4 @@
-package com.douglei.dynamic.proxy;
+package com.douglei.aop.dynamic.proxy;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
