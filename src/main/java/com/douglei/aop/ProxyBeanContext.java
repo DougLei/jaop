@@ -73,7 +73,7 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 添加/删除 interceptor
 	// ---------------------------------------------------------------------------------------
-	public static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
+	private static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
 		if(interceptors != null && interceptors.length > 0) {
 			String clzName = clz.getName();
 			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
@@ -86,7 +86,7 @@ public class ProxyBeanContext {
 		}
 	}
 	
-	public static void addInterceptor(Class<?> clz, List<ProxyInterceptor> interceptors) {
+	private static void addInterceptor(Class<?> clz, List<ProxyInterceptor> interceptors) {
 		if(interceptors != null && interceptors.size() > 0) {
 			String clzName = clz.getName();
 			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
