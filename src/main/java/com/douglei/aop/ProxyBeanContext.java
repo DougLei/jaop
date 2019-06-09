@@ -12,7 +12,7 @@ import com.douglei.tools.utils.reflect.ConstructorUtil;
  * @author DougLei
  */
 public class ProxyBeanContext {
-	private static final Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>();
+	private static Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>();
 	
 	// ---------------------------------------------------------------------------------------
 	// 创建代理Bean
@@ -118,7 +118,19 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 
 	// ---------------------------------------------------------------------------------------
+	/**
+	 * 获取代理bean的集合
+	 * @return
+	 */
 	public static Collection<ProxyBean> getProxyBeans() {
 		return PROXY_BEAN_MAP.values();
+	}
+	
+	/**
+	 * 销毁ProxyBeanContext
+	 */
+	public static void destroy() {
+		PROXY_BEAN_MAP.clear();
+		PROXY_BEAN_MAP = null;
 	}
 }
