@@ -1,6 +1,7 @@
 package com.douglei.dynamic.proxy;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
 import com.douglei.aop.ProxyInterceptor;
 
@@ -12,6 +13,9 @@ public class LogProxy extends ProxyInterceptor {
 
 	public LogProxy(Method method) {
 		super(method);
+	}
+	public LogProxy(List<Method> methods) {
+		super(methods);
 	}
 
 	@Override
