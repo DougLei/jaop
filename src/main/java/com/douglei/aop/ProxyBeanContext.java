@@ -1,6 +1,5 @@
 package com.douglei.aop;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -119,18 +118,10 @@ public class ProxyBeanContext {
 	// 
 	// ---------------------------------------------------------------------------------------
 	/**
-	 * 获取代理bean的集合
+	 * 是否存在代理bean
 	 * @return
 	 */
-	public static Collection<ProxyBean> getProxyBeans() {
-		return PROXY_BEAN_MAP.values();
-	}
-	
-	/**
-	 * 销毁ProxyBeanContext
-	 */
-	public static void destroy() {
-		PROXY_BEAN_MAP.clear();
-		PROXY_BEAN_MAP = null;
+	public static boolean existsProxyBeans() {
+		return PROXY_BEAN_MAP.size() > 0;
 	}
 }
