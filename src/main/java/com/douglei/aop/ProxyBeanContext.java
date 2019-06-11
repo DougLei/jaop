@@ -25,7 +25,9 @@ public class ProxyBeanContext {
 	}
 	
 	public static Object createProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
-		return createProxy(clz, object).getProxy();
+		ProxyBean proxyBean = createProxy(clz, object);
+		addInterceptor(proxyBean, interceptors);
+		return proxyBean.getProxy();
 	}
 	
 	public static Object createProxy(Class<?> clz, List<ProxyInterceptor> interceptors) {
@@ -37,7 +39,9 @@ public class ProxyBeanContext {
 	}
 	
 	public static Object createProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
-		return createProxy(clz, object).getProxy();
+		ProxyBean proxyBean = createProxy(clz, object);
+		addInterceptor(proxyBean, interceptors);
+		return proxyBean.getProxy();
 	}
 	
 	// ---------------------------------------------------------------------------------------
@@ -53,7 +57,7 @@ public class ProxyBeanContext {
 	
 	public static Object createAndAddProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
 		ProxyBean proxyBean = createAndAddProxy(clz, object);
-		addInterceptor(clz, interceptors);
+		addInterceptor(proxyBean, interceptors);
 		return proxyBean.getProxy();
 	}
 	
@@ -67,7 +71,7 @@ public class ProxyBeanContext {
 	
 	public static Object createAndAddProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
 		ProxyBean proxyBean = createAndAddProxy(clz, object);
-		addInterceptor(clz, interceptors);
+		addInterceptor(proxyBean, interceptors);
 		return proxyBean.getProxy();
 	}
 	
@@ -120,27 +124,23 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 添加/删除 interceptor
 	// ---------------------------------------------------------------------------------------
-	private static void addInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
+	private static void addInterceptor(ProxyBean proxyBean, ProxyInterceptor... interceptors) {
 		if(interceptors != null && interceptors.length > 0) {
-			String clzName = clz.getName();
-			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
-			if(pw == null) {
-				throw new NotExistsProxyBeanException(clzName);
+			if(proxyBean == null) {
+				throw new NullPointerException("proxyBean不能为空");
 			}
 			for (ProxyInterceptor interceptor : interceptors) {
-				pw.addInterceptor(interceptor);
+				proxyBean.addInterceptor(interceptor);
 			}
 		}
 	}
 	
-	private static void addInterceptor(Class<?> clz, List<ProxyInterceptor> interceptors) {
+	private static void addInterceptor(ProxyBean proxyBean, List<ProxyInterceptor> interceptors) {
 		if(interceptors != null && interceptors.size() > 0) {
-			String clzName = clz.getName();
-			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
-			if(pw == null) {
-				throw new NotExistsProxyBeanException(clzName);
+			if(proxyBean == null) {
+				throw new NullPointerException("proxyBean不能为空");
 			}
-			pw.setInterceptors(interceptors);
+			proxyBean.setInterceptors(interceptors);
 		}
 	}
 
