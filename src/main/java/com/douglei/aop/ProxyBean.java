@@ -21,7 +21,8 @@ class ProxyBean {
 	public boolean before(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if((interceptor.getMethods() == null ||  interceptor.getMethods().contains(method)) && !interceptor.before(obj, method, args)) {
+				// 如果全部方法需要增强, 或者指定的方法被增强  同时, 对要增强的方法before返回false, 则不能继续向下调用被代理的方法或其他拦截器方法
+				if((interceptor.getMethods() == null || interceptor.getMethods().contains(method)) && !interceptor.before(obj, method, args)) {
 					return false;
 				}
 			}
@@ -32,7 +33,7 @@ class ProxyBean {
 	public Object after(Object obj, Method method, Object[] args, Object result) throws Throwable {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethods() == null ||  interceptor.getMethods().contains(method)) {
+				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
 					result = interceptor.after(obj, method, args, result);
 				}
 			}
@@ -45,6 +46,8 @@ class ProxyBean {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
 					interceptor.exception(obj, method, args, t);
+				}else {
+					t.printStackTrace();// 没有增强的方法, 如果出现异常, 这里就直接打印出来
 				}
 			}
 		}
@@ -53,7 +56,7 @@ class ProxyBean {
 	public void finally_(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethods() == null ||  interceptor.getMethods().contains(method)) {
+				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
 					interceptor.finally_(obj, method, args);
 				}
 			}
@@ -77,9 +80,6 @@ class ProxyBean {
 	
 	public Object getProxy() {
 		return proxy;
-	}
-	public void setObject(Object object) {
-		this.object = object;
 	}
 	public List<ProxyInterceptor> getInterceptors() {
 		return interceptors;
