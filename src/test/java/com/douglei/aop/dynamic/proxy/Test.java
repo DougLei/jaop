@@ -16,7 +16,7 @@ public class Test {
 		
 		
 		
-		ProxyBeanContext.createProxyBean(ServiceImpl.class, new LogProxy(list));
+		ProxyBeanContext.createProxy(ServiceImpl.class, new LogProxy(list));
 		ProxyBeanContext.getProxy(ServiceImpl.class).add();
 	}
 }
