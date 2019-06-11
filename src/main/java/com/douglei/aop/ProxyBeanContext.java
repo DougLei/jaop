@@ -25,9 +25,7 @@ public class ProxyBeanContext {
 	}
 	
 	public static Object createProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
-		ProxyBean proxyBean = createProxy(clz, object);
-		addInterceptor(clz, interceptors);
-		return proxyBean.getProxy();
+		return createProxy(clz, object).getProxy();
 	}
 	
 	public static Object createProxy(Class<?> clz, List<ProxyInterceptor> interceptors) {
@@ -39,9 +37,7 @@ public class ProxyBeanContext {
 	}
 	
 	public static Object createProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
-		ProxyBean proxyBean = createProxy(clz, object);
-		addInterceptor(clz, interceptors);
-		return proxyBean.getProxy();
+		return createProxy(clz, object).getProxy();
 	}
 	
 	// ---------------------------------------------------------------------------------------
