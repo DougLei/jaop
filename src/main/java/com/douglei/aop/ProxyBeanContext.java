@@ -79,7 +79,7 @@ public class ProxyBeanContext {
 	 * 创建代理对象
 	 * @param clz
 	 * @param object
-	 * @return 
+	 * @return 创建的代理bean
 	 */
 	private static ProxyBean createProxy(Class<?> clz, Object object) {
 		String clzName = clz.getName();
@@ -95,7 +95,7 @@ public class ProxyBeanContext {
 	 * 创建代理对象, 并将创建的代理bean添加到PROXY_BEAN_MAP中
 	 * @param clz
 	 * @param object
-	 * @return 创建的代理对象
+	 * @return 创建的代理bean
 	 */
 	private static ProxyBean createAndAddProxy(Class<?> clz, Object object) {
 		ProxyBean proxyBean = createProxy(clz, object);
