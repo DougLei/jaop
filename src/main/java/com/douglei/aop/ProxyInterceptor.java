@@ -14,8 +14,10 @@ public abstract class ProxyInterceptor {
 	
 	public ProxyInterceptor(Class<?> clz, Method method) {
 		this.clz = clz;
-		methods = new ArrayList<Method>(1);
-		methods.add(method);
+		if(method != null) {
+			methods = new ArrayList<Method>(1);
+			methods.add(method);
+		}
 	}
 	
 	public ProxyInterceptor(Class<?> clz, List<Method> methods) {
