@@ -42,14 +42,45 @@ public class ProxyBeanContext {
 		addInterceptor(clz, interceptors);
 	}
 	
-	private static void createProxyBean(Class<?> clz, Object object) {
+	public static void createAndAddProxyBean(Class<?> clz, ProxyInterceptor... interceptors) {
+		createAndAddProxyBean(clz, ConstructorUtil.newInstance(clz), interceptors);
+	}
+	
+	public static void createAndAddProxyBean(Object object, ProxyInterceptor... interceptors) {
+		createAndAddProxyBean(object.getClass(), object, interceptors);
+	}
+	
+	public static void createAndAddProxyBean(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
+		createAndAddProxyBean(clz, object);
+		addInterceptor(clz, interceptors);
+	}
+	
+	public static void createAndAddProxyBean(Class<?> clz, List<ProxyInterceptor> interceptors) {
+		createAndAddProxyBean(clz, ConstructorUtil.newInstance(clz), interceptors);
+	}
+	
+	public static void createAndAddProxyBean(Object object, List<ProxyInterceptor> interceptors) {
+		createAndAddProxyBean(object.getClass(), object, interceptors);
+	}
+	
+	public static void createAndAddProxyBean(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
+		createAndAddProxyBean(clz, object);
+		addInterceptor(clz, interceptors);
+	}
+	
+	private static ProxyBeanFactory createProxyBean(Class<?> clz, Object object) {
 		String clzName = clz.getName();
 		if(PROXY_BEAN_MAP.containsKey(clzName)) {
 			throw new RepeatedProxyException(clzName);
 		}
 		ProxyBeanFactory pbf = new ProxyBeanFactory();
 		pbf.createProxy(clz, object);
-		PROXY_BEAN_MAP.put(clzName, pbf.getProxyBean());
+		return pbf;
+	}
+	
+	private static void createAndAddProxyBean(Class<?> clz, Object object) {
+		ProxyBeanFactory pbf = createProxyBean(clz, object);
+		PROXY_BEAN_MAP.put(clz.getName(), pbf.getProxyBean());
 	}
 	
 	// ---------------------------------------------------------------------------------------
