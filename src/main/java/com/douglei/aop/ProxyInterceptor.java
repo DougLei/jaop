@@ -9,14 +9,17 @@ import java.util.List;
  * @author DougLei
  */
 public abstract class ProxyInterceptor {
+	protected Class<?> clz;
 	protected List<Method> methods;
 	
-	public ProxyInterceptor(Method method) {
+	public ProxyInterceptor(Class<?> clz, Method method) {
+		this.clz = clz;
 		methods = new ArrayList<Method>(1);
 		methods.add(method);
 	}
 	
-	public ProxyInterceptor(List<Method> methods) {
+	public ProxyInterceptor(Class<?> clz, List<Method> methods) {
+		this.clz = clz;
 		this.methods = methods;
 	}
 	

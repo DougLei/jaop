@@ -12,10 +12,10 @@ import com.douglei.aop.ProxyInterceptor;
 public class LogProxy extends ProxyInterceptor {
 
 	public LogProxy(Method method) {
-		super(method);
+		super(null, method);
 	}
 	public LogProxy(List<Method> methods) {
-		super(methods);
+		super(null, methods);
 	}
 
 	@Override
