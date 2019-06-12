@@ -72,11 +72,11 @@ class ProxyBean {
 		interceptors.add(proxyInterceptor);
 	}
 	
-	public void removeInterceptor(ProxyInterceptor proxyInterceptor) {
-		if(interceptors != null && interceptors.size() > 0) {
-			interceptors.remove(proxyInterceptor);
-		}
-	}
+//	public void removeInterceptor(ProxyInterceptor proxyInterceptor) {
+//		if(interceptors != null && interceptors.size() > 0) {
+//			interceptors.remove(proxyInterceptor);
+//		}
+//	}
 	
 	public Object getProxy() {
 		return proxy;
