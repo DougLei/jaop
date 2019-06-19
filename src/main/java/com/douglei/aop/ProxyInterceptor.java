@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
+ * 代理拦截器, 需要自定义实现, 增强目标方法/类
  * @author DougLei
  */
 public abstract class ProxyInterceptor {
