@@ -24,6 +24,7 @@
 		    <groupId>cglib</groupId>
 		    <artifactId>cglib</artifactId>
 		    <version>3.2.12</version>
+		    <scope>provided</scope>
 		</dependency>
 		
 		<dependency>
