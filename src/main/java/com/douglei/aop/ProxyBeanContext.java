@@ -11,7 +11,10 @@ import com.douglei.tools.utils.reflect.ConstructorUtil;
  * @author DougLei
  */
 public class ProxyBeanContext {
-	private static Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>();
+	/**
+	 * 代理bean的容器
+	 */
+	private static Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>(16);
 	
 	// ---------------------------------------------------------------------------------------
 	// 创建代理Bean, 返回创建的代理对象
