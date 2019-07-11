@@ -5,6 +5,9 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -14,6 +17,8 @@ import net.sf.cglib.proxy.MethodProxy;
  * @author DougLei
  */
 class ProxyBeanFactory {
+	private static final Logger logger = LoggerFactory.getLogger(ProxyBeanFactory.class);
+	
 	private ProxyBean proxyBean;
 
 	public ProxyBean getProxyBean() {
@@ -90,6 +95,9 @@ class ProxyBeanFactory {
 		Object result = null;
 		try {
 			beProxy = proxyBean.before_(originObject, method, args);
+			if(logger.isDebugEnabled()) {
+				logger.debug("执行[{}]类的[{}]方法, {}代理", originObject.getClass().getName(), method.getName(), beProxy?"进行了":"未进行");
+			}
 			result = method.invoke(originObject, args);
 			if(beProxy) {
 				result = proxyBean.after_(originObject, method, args, result);
@@ -104,6 +112,9 @@ class ProxyBeanFactory {
 			if(beProxy) {
 				proxyBean.finally_(originObject, method, args);
 			}
+		}
+		if(logger.isDebugEnabled()) {
+			logger.debug("执行[{}]类的[{}]方法, 返回结果为[{}]", originObject.getClass().getName(), method.getName(), result);
 		}
 		return result;
 	}
