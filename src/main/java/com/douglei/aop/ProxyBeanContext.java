@@ -14,7 +14,7 @@ public class ProxyBeanContext {
 	/**
 	 * 代理bean的容器
 	 */
-	private static Map<String, ProxyBean> PROXY_BEAN_MAP = new HashMap<String, ProxyBean>(16);
+	private static Map<Class<?>, ProxyBean> PROXY_BEAN_MAP = new HashMap<Class<?>, ProxyBean>(16);
 	
 	// ---------------------------------------------------------------------------------------
 	// 创建代理Bean, 返回创建的代理对象
@@ -97,12 +97,11 @@ public class ProxyBeanContext {
 	 * @return 创建的代理bean
 	 */
 	private static ProxyBean createAndAddProxy(Class<?> clz, Object object) {
-		String clzName = clz.getName();
-		if(PROXY_BEAN_MAP.containsKey(clzName)) {
-			throw new RepeatedProxyException(clzName);
+		if(PROXY_BEAN_MAP.containsKey(clz)) {
+			throw new RepeatedProxyException(clz.getName());
 		}
 		ProxyBean proxyBean = createProxy(clz, object);
-		PROXY_BEAN_MAP.put(clz.getName(), proxyBean);
+		PROXY_BEAN_MAP.put(clz, proxyBean);
 		return proxyBean;
 	}
 	
@@ -115,8 +114,7 @@ public class ProxyBeanContext {
 	 * @return
 	 */
 	public static ProxyBean getProxyBean(Class<?> clz) {
-		String clzName = clz.getName();
-		return PROXY_BEAN_MAP.get(clzName);
+		return PROXY_BEAN_MAP.get(clz);
 	}
 	
 	/**
@@ -126,10 +124,9 @@ public class ProxyBeanContext {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getProxy(Class<T> clz) {
-		String clzName = clz.getName();
-		ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
+		ProxyBean pw = PROXY_BEAN_MAP.get(clz);
 		if(pw == null) {
-			throw new NotExistsProxyBeanException(clzName);
+			throw new NotExistsProxyBeanException(clz.getName());
 		}
 		return (T) pw.getProxy();
 	}
