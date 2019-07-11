@@ -34,7 +34,7 @@ class ProxyBeanFactory {
 	
 	@SuppressWarnings("unchecked")
 	private <T> T newProxyInstance(Class<T> clz, Object object) {
-		if(clz.getSuperclass().isInterface()) {
+		if(clz.getInterfaces().length > 0) {
 			return (T) Proxy.newProxyInstance(clz.getClassLoader(), clz.getInterfaces(), new InvocationHandler() {
 				@Override
 				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
