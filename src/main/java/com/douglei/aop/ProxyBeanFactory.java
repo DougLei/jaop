@@ -1,7 +1,7 @@
 package com.douglei.aop;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -34,7 +34,7 @@ class ProxyBeanFactory {
 	
 	@SuppressWarnings("unchecked")
 	private <T> T newProxyInstance(Class<T> clz, Object object) {
-		if(clz.getInterfaces().length > 0) {
+		if(isCreateDynamicProxyByInterface(clz.getInterfaces())) {
 			return (T) Proxy.newProxyInstance(clz.getClassLoader(), clz.getInterfaces(), new InvocationHandler() {
 				@Override
 				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -54,17 +54,57 @@ class ProxyBeanFactory {
 		}
 	}
 	
-	private Object coreInvoke(Object originObject, Method method, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	/**
+	 * 是否根据接口创建动态代理
+	 * @param interfaces
+	 * @return
+	 */
+	private boolean isCreateDynamicProxyByInterface(Class<?>[] interfaces) {
+		if(interfaces.length > 0) {
+			byte count = 0;
+			for (Class<?> interface_ : interfaces) {
+				for (Class<?> ii : IGNORE_INTERFACES) {
+					if(ii == interface_) {
+						count++;
+						break;
+					}
+				}
+			}
+			if(count < interfaces.length) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	// 要忽略的接口, 没有办法根据这些接口创建动态代理
+	// TODO 随时可能需要补充
+	private static final Class<?>[] IGNORE_INTERFACES = {
+			Serializable.class, 
+			Cloneable.class
+	};
+	
+
+	private Object coreInvoke(Object originObject, Method method, Object[] args) {
+		boolean beProxy = false;
+		Object result = null;
 		try {
-			if(proxyBean.before(originObject, method, args)) {
-				Object result = method.invoke(originObject, args);
-				return proxyBean.after(originObject, method, args, result);
+			beProxy = proxyBean.before_(originObject, method, args);
+			result = method.invoke(originObject, args);
+			if(beProxy) {
+				result = proxyBean.after_(originObject, method, args, result);
 			}
 		} catch (Throwable e) {
-			proxyBean.exception(originObject, method, args, e);
+			if(beProxy) {
+				proxyBean.exception_(originObject, method, args, e);
+			}else {
+				e.printStackTrace();
+			}
 		}finally {
-			proxyBean.finally_(originObject, method, args);
+			if(beProxy) {
+				proxyBean.finally_(originObject, method, args);
+			}
 		}
-		return null;
+		return result;
 	}
 }

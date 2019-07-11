@@ -18,11 +18,13 @@ public final class ProxyBean {
 		this.proxy = proxy;
 	}
 	
-	boolean before(Object obj, Method method, Object[] args) {
+	boolean before_(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				// 如果全部方法需要增强, 或者指定的方法被增强  同时, 对要增强的方法before返回false, 则不能继续向下调用被代理的方法或其他拦截器方法
-				if((interceptor.getMethods() == null || interceptor.getMethods().contains(method)) && !interceptor.before(obj, method, args)) {
+				// 第一是要判断该方法是否需要被增强
+				// 第二是要判断before_预处理是否返回true, 即预处理是否正常
+				// 满足这两个条件, 即可对该方法进行代理增强
+				if(!((interceptor.getMethods() == null || interceptor.getMethods().contains(method)) && interceptor.before_(obj, method, args))) {
 					return false;
 				}
 			}
@@ -30,22 +32,22 @@ public final class ProxyBean {
 		return true;
 	}
 
-	Object after(Object obj, Method method, Object[] args, Object result) throws Throwable {
+	Object after_(Object obj, Method method, Object[] args, Object result) throws Throwable {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
-					result = interceptor.after(obj, method, args, result);
+					result = interceptor.after_(obj, method, args, result);
 				}
 			}
 		}
 		return result;
 	}
 
-	void exception(Object obj, Method method, Object[] args, Throwable t) {
+	void exception_(Object obj, Method method, Object[] args, Throwable t) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
-					interceptor.exception(obj, method, args, t);
+					interceptor.exception_(obj, method, args, t);
 				}else {
 					t.printStackTrace();// 没有增强的方法, 如果出现异常, 这里就直接打印出来
 				}

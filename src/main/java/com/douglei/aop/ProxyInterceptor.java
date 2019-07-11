@@ -32,7 +32,7 @@ public abstract class ProxyInterceptor {
 	 * @param args
 	 * @return
 	 */
-	protected boolean before(Object obj, Method method, Object[] args) {
+	protected boolean before_(Object obj, Method method, Object[] args) {
 		return true;
 	}
 	
@@ -45,7 +45,7 @@ public abstract class ProxyInterceptor {
 	 * @return
 	 * @throws Throwable
 	 */
-	protected Object after(Object obj, Method method, Object[] args, Object result) throws Throwable{
+	protected Object after_(Object obj, Method method, Object[] args, Object result) throws Throwable{
 		return result;
 	}
 	
@@ -56,7 +56,7 @@ public abstract class ProxyInterceptor {
 	 * @param args
 	 * @param t
 	 */
-	protected void exception(Object obj, Method method, Object[] args, Throwable t) {
+	protected void exception_(Object obj, Method method, Object[] args, Throwable t) {
 		t.printStackTrace();
 	}
 	
