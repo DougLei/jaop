@@ -8,13 +8,13 @@ import java.util.List;
  * 
  * @author DougLei
  */
-class ProxyBean {
-	private Object object;// 被代理的目标对象
+public class ProxyBean {
+	private Object originObject;// 被代理的源目标对象
 	private Object proxy;// 代理对象
 	private List<ProxyInterceptor> interceptors;// 代理拦截器链
 	
-	public ProxyBean(Object object, Object proxy) {
-		this.object = object;
+	public ProxyBean(Object originObject, Object proxy) {
+		this.originObject = originObject;
 		this.proxy = proxy;
 	}
 	
@@ -67,7 +67,7 @@ class ProxyBean {
 		if(interceptors == null) {
 			interceptors = new ArrayList<ProxyInterceptor>();
 		}else if(interceptors.contains(proxyInterceptor)) {
-			throw new RepeatedProxyInterceptorException("["+object.getClass().getName()+"]对象已经存在["+proxyInterceptor.getClass().getName()+"]拦截器");
+			throw new RepeatedProxyInterceptorException("["+originObject.getClass().getName()+"]对象已经存在["+proxyInterceptor.getClass().getName()+"]拦截器");
 		}
 		interceptors.add(proxyInterceptor);
 	}
@@ -78,13 +78,16 @@ class ProxyBean {
 //		}
 //	}
 	
+	public Object getOriginObject() {
+		return originObject;
+	}
 	public Object getProxy() {
 		return proxy;
 	}
-	public List<ProxyInterceptor> getInterceptors() {
+	List<ProxyInterceptor> getInterceptors() {
 		return interceptors;
 	}
-	public void setInterceptors(List<ProxyInterceptor> interceptors) {
+	void setInterceptors(List<ProxyInterceptor> interceptors) {
 		this.interceptors = interceptors;
 	}
 }

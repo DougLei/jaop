@@ -19,63 +19,63 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 创建代理Bean, 返回创建的代理对象
 	// ---------------------------------------------------------------------------------------
-	public static Object createProxy(Class<?> clz, ProxyInterceptor... interceptors) {
+	public static ProxyBean createProxy(Class<?> clz, ProxyInterceptor... interceptors) {
 		return createProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
 	}
 	
-	public static Object createProxy(Object object, ProxyInterceptor... interceptors) {
+	public static ProxyBean createProxy(Object object, ProxyInterceptor... interceptors) {
 		return createProxy(object.getClass(), object, interceptors);
 	}
 	
-	public static Object createProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
+	public static ProxyBean createProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
 		ProxyBean proxyBean = createProxy(clz, object);
 		addInterceptor(proxyBean, interceptors);
-		return proxyBean.getProxy();
+		return proxyBean;
 	}
 	
-	public static Object createProxy(Class<?> clz, List<ProxyInterceptor> interceptors) {
+	public static ProxyBean createProxy(Class<?> clz, List<ProxyInterceptor> interceptors) {
 		return createProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
 	}
 	
-	public static Object createProxy(Object object, List<ProxyInterceptor> interceptors) {
+	public static ProxyBean createProxy(Object object, List<ProxyInterceptor> interceptors) {
 		return createProxy(object.getClass(), object, interceptors);
 	}
 	
-	public static Object createProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
+	public static ProxyBean createProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
 		ProxyBean proxyBean = createProxy(clz, object);
 		addInterceptor(proxyBean, interceptors);
-		return proxyBean.getProxy();
+		return proxyBean;
 	}
 	
 	// ---------------------------------------------------------------------------------------
 	// 创建代理Bean, 返回创建的代理对象, 并将创建的代理bean添加到PROXY_BEAN_MAP中
 	// ---------------------------------------------------------------------------------------
-	public static Object createAndAddProxy(Class<?> clz, ProxyInterceptor... interceptors) {
+	public static ProxyBean createAndAddProxy(Class<?> clz, ProxyInterceptor... interceptors) {
 		return createAndAddProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
 	}
 	
-	public static Object createAndAddProxy(Object object, ProxyInterceptor... interceptors) {
+	public static ProxyBean createAndAddProxy(Object object, ProxyInterceptor... interceptors) {
 		return createAndAddProxy(object.getClass(), object, interceptors);
 	}
 	
-	public static Object createAndAddProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
+	public static ProxyBean createAndAddProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
 		ProxyBean proxyBean = createAndAddProxy(clz, object);
 		addInterceptor(proxyBean, interceptors);
-		return proxyBean.getProxy();
+		return proxyBean;
 	}
 	
-	public static Object createAndAddProxy(Class<?> clz, List<ProxyInterceptor> interceptors) {
+	public static ProxyBean createAndAddProxy(Class<?> clz, List<ProxyInterceptor> interceptors) {
 		return createAndAddProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
 	}
 	
-	public static Object createAndAddProxy(Object object, List<ProxyInterceptor> interceptors) {
+	public static ProxyBean createAndAddProxy(Object object, List<ProxyInterceptor> interceptors) {
 		return createAndAddProxy(object.getClass(), object, interceptors);
 	}
 	
-	public static Object createAndAddProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
+	public static ProxyBean createAndAddProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
 		ProxyBean proxyBean = createAndAddProxy(clz, object);
 		addInterceptor(proxyBean, interceptors);
-		return proxyBean.getProxy();
+		return proxyBean;
 	}
 	
 	/**
@@ -85,10 +85,6 @@ public class ProxyBeanContext {
 	 * @return 创建的代理bean
 	 */
 	private static ProxyBean createProxy(Class<?> clz, Object object) {
-		String clzName = clz.getName();
-		if(PROXY_BEAN_MAP.containsKey(clzName)) {
-			throw new RepeatedProxyException(clzName);
-		}
 		ProxyBeanFactory pbf = new ProxyBeanFactory();
 		pbf.createProxy(clz, object);
 		return pbf.getProxyBean();
@@ -101,6 +97,10 @@ public class ProxyBeanContext {
 	 * @return 创建的代理bean
 	 */
 	private static ProxyBean createAndAddProxy(Class<?> clz, Object object) {
+		String clzName = clz.getName();
+		if(PROXY_BEAN_MAP.containsKey(clzName)) {
+			throw new RepeatedProxyException(clzName);
+		}
 		ProxyBean proxyBean = createProxy(clz, object);
 		PROXY_BEAN_MAP.put(clz.getName(), proxyBean);
 		return proxyBean;
