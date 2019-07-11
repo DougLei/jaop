@@ -109,11 +109,21 @@ public class ProxyBeanContext {
 	// ---------------------------------------------------------------------------------------
 	// 获取代理对象
 	// ---------------------------------------------------------------------------------------
-	@SuppressWarnings("unchecked")
-	public static <T> T getProxy(Object object) {
-		return (T) getProxy(object.getClass());
+	/**
+	 * 获取ProxyBean包装对象
+	 * @param clz
+	 * @return
+	 */
+	public static ProxyBean getProxyBean(Class<?> clz) {
+		String clzName = clz.getName();
+		return PROXY_BEAN_MAP.get(clzName);
 	}
 	
+	/**
+	 * 获取代理对象
+	 * @param clz
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getProxy(Class<T> clz) {
 		String clzName = clz.getName();
@@ -163,4 +173,15 @@ public class ProxyBeanContext {
 //			}
 //		}
 //	}
+	
+	// ---------------------------------------------------------------------------------------
+	// destroy
+	// ---------------------------------------------------------------------------------------
+	/**
+	 * 销毁容器
+	 */
+	public static void destroy() {
+		PROXY_BEAN_MAP.clear();
+		PROXY_BEAN_MAP = null;
+	}
 }
