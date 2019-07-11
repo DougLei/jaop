@@ -8,17 +8,17 @@ import java.util.List;
  * 
  * @author DougLei
  */
-public class ProxyBean {
+public final class ProxyBean {
 	private Object originObject;// 被代理的源目标对象
 	private Object proxy;// 代理对象
 	private List<ProxyInterceptor> interceptors;// 代理拦截器链
 	
-	public ProxyBean(Object originObject, Object proxy) {
+	ProxyBean(Object originObject, Object proxy) {
 		this.originObject = originObject;
 		this.proxy = proxy;
 	}
 	
-	public boolean before(Object obj, Method method, Object[] args) {
+	boolean before(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				// 如果全部方法需要增强, 或者指定的方法被增强  同时, 对要增强的方法before返回false, 则不能继续向下调用被代理的方法或其他拦截器方法
@@ -30,7 +30,7 @@ public class ProxyBean {
 		return true;
 	}
 
-	public Object after(Object obj, Method method, Object[] args, Object result) throws Throwable {
+	Object after(Object obj, Method method, Object[] args, Object result) throws Throwable {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
@@ -41,7 +41,7 @@ public class ProxyBean {
 		return result;
 	}
 
-	public void exception(Object obj, Method method, Object[] args, Throwable t) {
+	void exception(Object obj, Method method, Object[] args, Throwable t) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
@@ -53,7 +53,7 @@ public class ProxyBean {
 		}
 	}
 	
-	public void finally_(Object obj, Method method, Object[] args) {
+	void finally_(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
@@ -63,7 +63,7 @@ public class ProxyBean {
 		}
 	}
 	
-	public void addInterceptor(ProxyInterceptor proxyInterceptor) {
+	void addInterceptor(ProxyInterceptor proxyInterceptor) {
 		if(interceptors == null) {
 			interceptors = new ArrayList<ProxyInterceptor>();
 		}else if(interceptors.contains(proxyInterceptor)) {
