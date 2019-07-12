@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import com.douglei.aop.ProxyInterceptor;
+import com.douglei.aop.ProxyMethod;
 
 /**
  * 
@@ -11,10 +12,10 @@ import com.douglei.aop.ProxyInterceptor;
  */
 public class LogProxy extends ProxyInterceptor {
 
-	public LogProxy(Method method) {
+	public LogProxy(ProxyMethod method) {
 		super(null, method);
 	}
-	public LogProxy(List<Method> methods) {
+	public LogProxy(List<ProxyMethod> methods) {
 		super(null, methods);
 	}
 

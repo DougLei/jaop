@@ -4,23 +4,28 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 代理拦截器, 需要自定义实现, 增强目标方法/类
  * @author DougLei
  */
 public abstract class ProxyInterceptor {
-	protected Class<?> clz;
-	protected List<Method> methods;
+	private static final Logger logger = LoggerFactory.getLogger(ProxyInterceptor.class);
 	
-	public ProxyInterceptor(Class<?> clz, Method method) {
+	protected Class<?> clz;
+	protected List<ProxyMethod> methods;
+	
+	public ProxyInterceptor(Class<?> clz, ProxyMethod method) {
 		this.clz = clz;
 		if(method != null) {
-			methods = new ArrayList<Method>(1);
+			methods = new ArrayList<ProxyMethod>(1);
 			methods.add(method);
 		}
 	}
 	
-	public ProxyInterceptor(Class<?> clz, List<Method> methods) {
+	public ProxyInterceptor(Class<?> clz, List<ProxyMethod> methods) {
 		this.clz = clz;
 		this.methods = methods;
 	}
@@ -69,34 +74,28 @@ public abstract class ProxyInterceptor {
 	protected void finally_(Object obj, Method method, Object[] args) {
 	}
 	
-	public List<Method> getMethods() {
-		return methods;
+	/**
+	 * 是否代理所有方法
+	 * @return
+	 */
+	final boolean proxyAllMethod() {
+		return methods == null;
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((methods == null) ? 0 : methods.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null || getClass() != obj.getClass()) {
-			return false;
-		}
-		ProxyInterceptor other = (ProxyInterceptor) obj;
-		if (methods == null) {
-			if (other.methods == null) {
+	/**
+	 * 是否拦截指定方法
+	 * @param interceptedMethod
+	 * @return
+	 */
+	final boolean isInterceptMethod(Method interceptedMethod) {
+		for (ProxyMethod proxyMethod : methods) {
+			if(logger.isDebugEnabled()) {
+				logger.debug("拦截的方法[{}]来自[{}]", interceptedMethod, interceptedMethod.getDeclaringClass());
+			}
+			if(proxyMethod.equalMethod(interceptedMethod)) {
 				return true;
-			}else {
-				return false;
 			}
 		}
-		return methods.equals(other.methods);
+		return false;
 	}
 }

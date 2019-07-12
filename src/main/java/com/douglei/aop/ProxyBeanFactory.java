@@ -90,6 +90,13 @@ class ProxyBeanFactory {
 	};
 	
 
+	/**
+	 * 
+	 * @param originObject
+	 * @param method
+	 * @param args
+	 * @return
+	 */
 	private Object coreInvoke(Object originObject, Method method, Object[] args) {
 		boolean beProxy = false;
 		Object result = null;

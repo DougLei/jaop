@@ -18,13 +18,23 @@ public final class ProxyBean {
 		this.proxy = proxy;
 	}
 	
+	/**
+	 * 是否拦截方法
+	 * @param method
+	 * @param interceptor
+	 * @return
+	 */
+	private boolean isInterceptMethod(Method method, ProxyInterceptor interceptor) {
+		return interceptor.proxyAllMethod() || interceptor.isInterceptMethod(method);
+	}
+	
 	boolean before_(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				// 第一是要判断该方法是否需要被增强
 				// 第二是要判断before_预处理是否返回true, 即预处理是否正常
 				// 满足这两个条件, 即可对该方法进行代理增强
-				if(!((interceptor.getMethods() == null || interceptor.getMethods().contains(method)) && interceptor.before_(obj, method, args))) {
+				if(!(isInterceptMethod(method, interceptor) && interceptor.before_(obj, method, args))) {
 					return false;
 				}
 			}
@@ -35,7 +45,7 @@ public final class ProxyBean {
 	Object after_(Object obj, Method method, Object[] args, Object result) throws Throwable {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
+				if(isInterceptMethod(method, interceptor)) {
 					result = interceptor.after_(obj, method, args, result);
 				}
 			}
@@ -46,10 +56,8 @@ public final class ProxyBean {
 	void exception_(Object obj, Method method, Object[] args, Throwable t) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
+				if(isInterceptMethod(method, interceptor)) {
 					interceptor.exception_(obj, method, args, t);
-				}else {
-					t.printStackTrace();// 没有增强的方法, 如果出现异常, 这里就直接打印出来
 				}
 			}
 		}
@@ -58,7 +66,7 @@ public final class ProxyBean {
 	void finally_(Object obj, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				if(interceptor.getMethods() == null || interceptor.getMethods().contains(method)) {
+				if(isInterceptMethod(method, interceptor)) {
 					interceptor.finally_(obj, method, args);
 				}
 			}
@@ -74,7 +82,7 @@ public final class ProxyBean {
 		interceptors.add(proxyInterceptor);
 	}
 	
-//	public void removeInterceptor(ProxyInterceptor proxyInterceptor) {
+//	void removeInterceptor(ProxyInterceptor proxyInterceptor) {
 //		if(interceptors != null && interceptors.size() > 0) {
 //			interceptors.remove(proxyInterceptor);
 //		}

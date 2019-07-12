@@ -1,18 +1,18 @@
 package com.douglei.aop.dynamic.proxy;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.douglei.aop.ProxyBeanContext;
+import com.douglei.aop.ProxyMethod;
 import com.douglei.aop.dynamic.proxy.jdk.ServiceImpl;
 
 public class Test {
 	public static void main(String[] args) throws NoSuchMethodException, SecurityException {
 		
-		List<Method> list = new ArrayList<Method>();
-		list.add(ServiceImpl.class.getDeclaredMethod("add"));
-		list.add(ServiceImpl.class.getDeclaredMethod("delete"));
+		List<ProxyMethod> list = new ArrayList<ProxyMethod>();
+		list.add(new ProxyMethod(ServiceImpl.class.getDeclaredMethod("add")));
+		list.add(new ProxyMethod(ServiceImpl.class.getDeclaredMethod("delete")));
 		
 		
 		
