@@ -88,9 +88,12 @@ public abstract class ProxyInterceptor {
 	 * @return
 	 */
 	final boolean isInterceptMethod(Method interceptedMethod) {
+		if(logger.isDebugEnabled()) {
+			logger.debug("拦截的方法[{}]来自[{}]", interceptedMethod, interceptedMethod.getDeclaringClass());
+		}
 		for (ProxyMethod proxyMethod : methods) {
 			if(logger.isDebugEnabled()) {
-				logger.debug("拦截的方法[{}]来自[{}]", interceptedMethod, interceptedMethod.getDeclaringClass());
+				logger.debug("与[{}]方法比较", proxyMethod);
 			}
 			if(proxyMethod.equalMethod(interceptedMethod)) {
 				return true;
