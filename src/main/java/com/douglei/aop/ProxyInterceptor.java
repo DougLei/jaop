@@ -92,9 +92,9 @@ public abstract class ProxyInterceptor {
 			logger.debug("拦截的方法[{}]来自[{}]", interceptedMethod, interceptedMethod.getDeclaringClass());
 		}
 		for (ProxyMethod proxyMethod : methods) {
-			logger.debug("与[{}]方法比较", proxyMethod);
+			logger.debug("与[{}]方法进行匹配判断", proxyMethod);
 			if(proxyMethod.equalMethod(interceptedMethod)) {
-				logger.debug("匹配成功");
+				logger.debug("与[{}]方法匹配成功", proxyMethod);
 				return true;
 			}
 		}
