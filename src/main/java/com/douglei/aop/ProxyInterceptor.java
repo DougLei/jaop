@@ -32,46 +32,46 @@ public abstract class ProxyInterceptor {
 	
 	/**
 	 * 前置处理, 如果返回false, 则不会调用被代理的方法
-	 * @param obj
+	 * @param originObject
 	 * @param method
 	 * @param args
 	 * @return
 	 */
-	protected boolean before_(Object obj, Method method, Object[] args) {
+	protected boolean before_(Object originObject, Method method, Object[] args) {
 		return true;
 	}
 	
 	/**
 	 * 后置处理, 处理并返回调用被代理的返回值
-	 * @param obj
+	 * @param originObject
 	 * @param method
 	 * @param args
 	 * @param result
 	 * @return
 	 * @throws Throwable
 	 */
-	protected Object after_(Object obj, Method method, Object[] args, Object result) throws Throwable{
+	protected Object after_(Object originObject, Method method, Object[] args, Object result) throws Throwable{
 		return result;
 	}
 	
 	/**
 	 * 调用被代理方法出现异常时的处理
-	 * @param obj
+	 * @param originObject
 	 * @param method
 	 * @param args
 	 * @param t
 	 */
-	protected void exception_(Object obj, Method method, Object[] args, Throwable t) {
+	protected void exception_(Object originObject, Method method, Object[] args, Throwable t) {
 		t.printStackTrace();
 	}
 	
 	/**
 	 * 调用被代理方式的finally块
-	 * @param obj
+	 * @param originObject
 	 * @param method
 	 * @param args
 	 */
-	protected void finally_(Object obj, Method method, Object[] args) {
+	protected void finally_(Object originObject, Method method, Object[] args) {
 	}
 	
 	/**

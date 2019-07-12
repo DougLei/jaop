@@ -18,13 +18,13 @@ public final class ProxyBean {
 		this.proxy = proxy;
 	}
 	
-	boolean before_(Object obj, Method method, Object[] args) {
+	boolean before_(Object originObject, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				// 第一是要判断该方法是否需要被增强
 				// 第二是要判断before_预处理是否返回true, 即预处理是否正常
 				// 满足这两个条件, 即可对该方法进行代理增强
-				if(!((interceptor.proxyAllMethod() || interceptor.isInterceptMethod(method)) && interceptor.before_(obj, method, args))) {
+				if(!((interceptor.proxyAllMethod() || interceptor.isInterceptMethod(method)) && interceptor.before_(originObject, method, args))) {
 					return false;
 				}
 			}
@@ -32,27 +32,27 @@ public final class ProxyBean {
 		return true;
 	}
 
-	Object after_(Object obj, Method method, Object[] args, Object result) throws Throwable {
+	Object after_(Object originObject, Method method, Object[] args, Object result) throws Throwable {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				result = interceptor.after_(obj, method, args, result);
+				result = interceptor.after_(originObject, method, args, result);
 			}
 		}
 		return result;
 	}
 
-	void exception_(Object obj, Method method, Object[] args, Throwable t) {
+	void exception_(Object originObject, Method method, Object[] args, Throwable t) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				interceptor.exception_(obj, method, args, t);
+				interceptor.exception_(originObject, method, args, t);
 			}
 		}
 	}
 	
-	void finally_(Object obj, Method method, Object[] args) {
+	void finally_(Object originObject, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
-				interceptor.finally_(obj, method, args);
+				interceptor.finally_(originObject, method, args);
 			}
 		}
 	}

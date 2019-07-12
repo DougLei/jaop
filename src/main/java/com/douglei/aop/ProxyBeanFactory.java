@@ -28,22 +28,22 @@ class ProxyBeanFactory {
 	/**
 	 * 创建代理对象
 	 * @param clz
-	 * @param object
+	 * @param originObject
 	 * @return
 	 */
-	public <T> T createProxy(Class<T> clz, Object object) {
-		T proxy = newProxyInstance(clz, object);
-		proxyBean = new ProxyBean(object, proxy);
+	public <T> T createProxy(Class<T> clz, Object originObject) {
+		T proxy = newProxyInstance(clz, originObject);
+		proxyBean = new ProxyBean(originObject, proxy);
 		return (T) proxy;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> T newProxyInstance(Class<T> clz, Object object) {
+	private <T> T newProxyInstance(Class<T> clz, Object originObject) {
 		if(isCreateDynamicProxyByInterface(clz.getInterfaces())) {
 			return (T) Proxy.newProxyInstance(clz.getClassLoader(), clz.getInterfaces(), new InvocationHandler() {
 				@Override
 				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-					return coreInvoke(object, method, args);
+					return coreInvoke(originObject, method, args);
 				}
 			});
 		}else {
@@ -52,7 +52,7 @@ class ProxyBeanFactory {
 			enhancer.setCallback(new MethodInterceptor() {
 				@Override
 				public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-					return coreInvoke(object, method, args);
+					return coreInvoke(originObject, method, args);
 				}
 			});
 			return (T) enhancer.create();
