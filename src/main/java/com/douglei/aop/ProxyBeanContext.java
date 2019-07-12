@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.douglei.tools.utils.reflect.ConstructorUtil;
 
 /**
@@ -11,6 +14,8 @@ import com.douglei.tools.utils.reflect.ConstructorUtil;
  * @author DougLei
  */
 public class ProxyBeanContext {
+	private static final Logger logger = LoggerFactory.getLogger(ProxyBeanContext.class);
+	
 	/**
 	 * 代理bean的容器
 	 */
@@ -182,5 +187,6 @@ public class ProxyBeanContext {
 	public static void destroy() {
 		PROXY_BEAN_MAP.clear();
 		PROXY_BEAN_MAP = null;
+		logger.debug("[{}]被销毁", ProxyBeanContext.class.getName());
 	}
 }
