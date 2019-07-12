@@ -92,13 +92,13 @@ public abstract class ProxyInterceptor {
 			logger.debug("拦截的方法[{}]来自[{}]", interceptedMethod, interceptedMethod.getDeclaringClass());
 		}
 		for (ProxyMethod proxyMethod : methods) {
-			if(logger.isDebugEnabled()) {
-				logger.debug("与[{}]方法比较", proxyMethod);
-			}
+			logger.debug("与[{}]方法比较", proxyMethod);
 			if(proxyMethod.equalMethod(interceptedMethod)) {
+				logger.debug("匹配成功");
 				return true;
 			}
 		}
+		logger.debug("没有匹配到任何方法");
 		return false;
 	}
 }
