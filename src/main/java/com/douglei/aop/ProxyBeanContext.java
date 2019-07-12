@@ -135,25 +135,27 @@ public class ProxyBeanContext {
 	// 添加/删除 interceptor
 	// ---------------------------------------------------------------------------------------
 	private static void addInterceptor(ProxyBean proxyBean, ProxyInterceptor... interceptors) {
-		if(interceptors != null && interceptors.length > 0) {
-			if(proxyBean == null) {
-				throw new NullPointerException("proxyBean不能为空");
-			}
-			for (ProxyInterceptor interceptor : interceptors) {
-				proxyBean.addInterceptor(interceptor);
-			}
+		if(proxyBean == null) {
+			throw new NullPointerException("proxyBean不能为空");
+		}
+		if(interceptors == null || interceptors.length == 0) {
+			throw new NullPointerException("至少添加一个代理拦截器["+ProxyInterceptor.class.getName()+"]");
+		}
+		for (ProxyInterceptor interceptor : interceptors) {
+			proxyBean.addInterceptor(interceptor);
 		}
 	}
 	
 	private static void addInterceptor(ProxyBean proxyBean, List<ProxyInterceptor> interceptors) {
-		if(interceptors != null && interceptors.size() > 0) {
-			if(proxyBean == null) {
-				throw new NullPointerException("proxyBean不能为空");
-			}
-			proxyBean.setInterceptors(interceptors);
+		if(proxyBean == null) {
+			throw new NullPointerException("proxyBean不能为空");
 		}
+		if(interceptors == null || interceptors.size() == 0) {
+			throw new NullPointerException("至少添加一个代理拦截器["+ProxyInterceptor.class.getName()+"]");
+		}
+		proxyBean.setInterceptors(interceptors);
 	}
-
+	
 //	public static void removeInterceptor(Object object, ProxyInterceptor... interceptors) {
 //		removeInterceptor(object.getClass(), interceptors);
 //	}

@@ -98,25 +98,25 @@ class ProxyBeanFactory {
 	 * @return
 	 */
 	private Object coreInvoke(Object originObject, Method method, Object[] args) {
-		boolean beProxy = false;
+		boolean intercepted = false;
 		Object result = null;
 		try {
-			beProxy = proxyBean.before_(originObject, method, args);
+			intercepted = proxyBean.before_(originObject, method, args);
 			if(logger.isDebugEnabled()) {
-				logger.debug("执行[{}]类的[{}]方法, {}代理", originObject.getClass().getName(), method.getName(), beProxy?"进行了":"未进行");
+				logger.debug("执行[{}]类的[{}]方法, {}代理", originObject.getClass().getName(), method.getName(), intercepted?"进行了":"未进行");
 			}
 			result = method.invoke(originObject, args);
-			if(beProxy) {
+			if(intercepted) {
 				result = proxyBean.after_(originObject, method, args, result);
 			}
 		} catch (Throwable e) {
-			if(beProxy) {
+			if(intercepted) {
 				proxyBean.exception_(originObject, method, args, e);
 			}else {
-				e.printStackTrace();
+				e.printStackTrace();// 没有被代理, 则遇到异常, 直接抛出
 			}
 		}finally {
-			if(beProxy) {
+			if(intercepted) {
 				proxyBean.finally_(originObject, method, args);
 			}
 		}
