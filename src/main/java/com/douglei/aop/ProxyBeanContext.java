@@ -187,7 +187,7 @@ public class ProxyBeanContext {
 	 * 销毁容器
 	 */
 	public static void destroy() {
-		logger.info("[{}]被销毁, 销毁数量为[{}]", ProxyBeanContext.class.getName(), PROXY_BEAN_MAP.size());
+		logger.info("[{}]被销毁, 数量为[{}]", ProxyBeanContext.class.getName(), PROXY_BEAN_MAP.size());
 		if(logger.isDebugEnabled() && PROXY_BEAN_MAP.size() > 0) {
 			Set<Entry<Class<?>, ProxyBean>> entries = PROXY_BEAN_MAP.entrySet();
 			entries.forEach(entry -> {
