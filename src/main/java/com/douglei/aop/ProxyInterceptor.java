@@ -101,4 +101,9 @@ public abstract class ProxyInterceptor {
 		logger.debug("没有匹配到任何方法");
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "ProxyInterceptor [clz=" + clz.getName() + ", methods=" + methods + "]";
+	}
 }

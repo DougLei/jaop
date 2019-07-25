@@ -3,6 +3,8 @@ package com.douglei.aop;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -185,7 +187,13 @@ public class ProxyBeanContext {
 	 * 销毁容器
 	 */
 	public static void destroy() {
-		logger.debug("[{}]被销毁, 销毁数量为[{}]", ProxyBeanContext.class.getName(), PROXY_BEAN_MAP.size());
+		logger.info("[{}]被销毁, 销毁数量为[{}]", ProxyBeanContext.class.getName(), PROXY_BEAN_MAP.size());
+		if(logger.isDebugEnabled() && PROXY_BEAN_MAP.size() > 0) {
+			Set<Entry<Class<?>, ProxyBean>> entries = PROXY_BEAN_MAP.entrySet();
+			entries.forEach(entry -> {
+				logger.debug("销毁Class=[{}]的ProxyBean=[{}]", entry.getKey().getName(), entry.getValue());
+			});
+		}
 		PROXY_BEAN_MAP.clear();
 		PROXY_BEAN_MAP = null;
 	}

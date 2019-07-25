@@ -84,4 +84,9 @@ public final class ProxyBean {
 	void setInterceptors(List<ProxyInterceptor> interceptors) {
 		this.interceptors = interceptors;
 	}
+
+	@Override
+	public String toString() {
+		return "ProxyBean [originObject=" + originObject + ", proxy=" + proxy + ", interceptors=" + interceptors + "]";
+	}
 }
