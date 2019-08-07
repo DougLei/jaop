@@ -1,15 +1,10 @@
 package com.douglei.aop;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.douglei.tools.utils.CloseUtil;
-import com.douglei.tools.utils.datatype.converter.DataTypeConvertException;
+import com.douglei.tools.instances.reader.ResourcesReader;
 import com.douglei.tools.utils.reflect.ClassLoadUtil;
 
 /**
@@ -23,21 +18,9 @@ public class IgnoreInterfacesContext {
 		ignoreInterfaces_.add(Serializable.class);
 		ignoreInterfaces_.add(Cloneable.class);
 		
-		InputStream in = IgnoreInterfacesContext.class.getClassLoader().getResourceAsStream("jaop.ignore.interfaces.properties");
-		if(in != null) {
-			InputStreamReader isr = null;
-			BufferedReader br = null;
-			try {
-				isr = new InputStreamReader(in);
-				br = new BufferedReader(isr);
-				while(br.ready()) {
-					ignoreInterfaces_.add(ClassLoadUtil.loadClass(br.readLine()));
-				}
-			} catch (IOException e) {
-				throw new DataTypeConvertException("在读取jaop.ignore.interfaces.properties配置文件时出现异常", e);
-			} finally {
-				CloseUtil.closeIO(br, isr, in);
-			}
+		ResourcesReader reader = new ResourcesReader("ignore.interfaces.properties");
+		while(reader.ready()) {
+			ignoreInterfaces_.add(ClassLoadUtil.loadClass(reader.readLine()));
 		}
 		ignoreInterfaces = ignoreInterfaces_.toArray(new Class<?>[ignoreInterfaces_.size()]);
 	}
