@@ -67,7 +67,7 @@ class ProxyBeanFactory {
 		if(interfaces.length > 0) {
 			byte count = 0;
 			for (Class<?> interface_ : interfaces) {
-				if(IgnoreInterfacesContext.isIgnore(interface_)) {
+				if(IgnoreInterfacesProperties.isIgnore(interface_)) {
 					count++;
 				}
 			}

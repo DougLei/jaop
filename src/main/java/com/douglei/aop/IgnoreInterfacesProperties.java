@@ -11,7 +11,7 @@ import com.douglei.tools.utils.reflect.ClassLoadUtil;
  * 要忽略的接口集合容器
  * @author DougLei
  */
-public class IgnoreInterfacesContext {
+public class IgnoreInterfacesProperties {
 	private static final Class<?>[] ignoreInterfaces;
 	static {
 		List<Class<?>> ignoreInterfaces_ = new ArrayList<Class<?>>();
