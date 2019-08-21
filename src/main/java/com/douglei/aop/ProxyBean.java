@@ -41,7 +41,7 @@ public final class ProxyBean {
 		return result;
 	}
 
-	void exception_(Object originObject, Method method, Object[] args, Throwable t) {
+	void exception_(Object originObject, Method method, Object[] args, Throwable t) throws Throwable {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				interceptor.exception_(originObject, method, args, t);

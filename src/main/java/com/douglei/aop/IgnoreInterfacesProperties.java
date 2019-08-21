@@ -1,5 +1,6 @@
 package com.douglei.aop;
 
+import java.io.Closeable;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class IgnoreInterfacesProperties {
 		List<Class<?>> ignoreInterfaces_ = new ArrayList<Class<?>>();
 		ignoreInterfaces_.add(Serializable.class);
 		ignoreInterfaces_.add(Cloneable.class);
+		ignoreInterfaces_.add(Closeable.class);
 		
 		ResourcesReader reader = new ResourcesReader("ignore.interfaces.properties");
 		while(reader.ready()) {

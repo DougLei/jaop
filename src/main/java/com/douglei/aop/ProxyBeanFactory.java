@@ -7,6 +7,8 @@ import java.lang.reflect.Proxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.douglei.tools.utils.ExceptionUtil;
+
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -84,8 +86,9 @@ class ProxyBeanFactory {
 	 * @param method
 	 * @param args
 	 * @return
+	 * @throws Throwable 
 	 */
-	private Object coreInvoke(Object originObject, Method method, Object[] args) {
+	private Object coreInvoke(Object originObject, Method method, Object[] args) throws Throwable {
 		boolean intercepted = false;
 		Object result = null;
 		try {
@@ -101,7 +104,8 @@ class ProxyBeanFactory {
 			if(intercepted) {
 				proxyBean.exception_(originObject, method, args, e);
 			}else {
-				e.printStackTrace();// 没有被代理, 则遇到异常, 直接抛出
+				logger.error(ExceptionUtil.getExceptionDetailMessage(e));
+				throw e;// 没有被代理, 则遇到异常, 直接抛出
 			}
 		}finally {
 			if(intercepted) {

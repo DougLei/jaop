@@ -60,9 +60,10 @@ public abstract class ProxyInterceptor {
 	 * @param method
 	 * @param args
 	 * @param t
+	 * @throws Throwable
 	 */
-	protected void exception_(Object originObject, Method method, Object[] args, Throwable t) {
-		t.printStackTrace();
+	protected void exception_(Object originObject, Method method, Object[] args, Throwable t) throws Throwable {
+		throw t;
 	}
 	
 	/**
