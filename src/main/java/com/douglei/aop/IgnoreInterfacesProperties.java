@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.douglei.tools.instances.reader.ResourcesReader;
+import com.douglei.tools.instances.file.resources.reader.ResourcesReader;
 import com.douglei.tools.utils.reflect.ClassLoadUtil;
 
 /**
