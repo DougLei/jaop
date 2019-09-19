@@ -187,14 +187,18 @@ public class ProxyBeanContext {
 	 * 销毁容器
 	 */
 	public static void destroy() {
-		logger.info("[{}]被销毁, 数量为[{}]", ProxyBeanContext.class.getName(), PROXY_BEAN_MAP.size());
-		if(logger.isDebugEnabled() && PROXY_BEAN_MAP.size() > 0) {
-			Set<Entry<Class<?>, ProxyBean>> entries = PROXY_BEAN_MAP.entrySet();
-			entries.forEach(entry -> {
-				logger.debug("销毁Class=[{}]的ProxyBean=[{}]", entry.getKey().getName(), entry.getValue());
-			});
+		if(PROXY_BEAN_MAP != null) {
+			if(PROXY_BEAN_MAP.size() > 0) {
+				logger.info("[{}]被销毁, 数量为[{}]", ProxyBeanContext.class.getName(), PROXY_BEAN_MAP.size());
+				if(logger.isDebugEnabled() && PROXY_BEAN_MAP.size() > 0) {
+					Set<Entry<Class<?>, ProxyBean>> entries = PROXY_BEAN_MAP.entrySet();
+					entries.forEach(entry -> {
+						logger.debug("销毁Class=[{}]的ProxyBean=[{}]", entry.getKey().getName(), entry.getValue());
+					});
+				}
+				PROXY_BEAN_MAP.clear();
+			}
+			PROXY_BEAN_MAP = null;
 		}
-		PROXY_BEAN_MAP.clear();
-		PROXY_BEAN_MAP = null;
 	}
 }
