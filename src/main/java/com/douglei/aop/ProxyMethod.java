@@ -22,8 +22,8 @@ public final class ProxyMethod {
 	 * @return
 	 */
 	boolean equalMethod(Method interceptedMethod) {
-		// 如果被拦截的方法来自接口, 要还要判断一下定义时要拦截的方法所在的类, 是否实现了这个接口 
-		if(interceptedMethod.getDeclaringClass().isInterface() && ValidationUtil.isImplementInterface(interceptedMethod.getDeclaringClass(), method.getDeclaringClass().getInterfaces())) {
+		// 如果被拦截的方法来自接口, 还要判断一下定义时要拦截的方法所在的类, 是否实现了这个接口 
+		if(interceptedMethod.getDeclaringClass().isInterface() && ValidationUtil.isImplementInterface(method.getDeclaringClass(), interceptedMethod.getDeclaringClass())) {
 			if(method.getName().equals(interceptedMethod.getName()) 
 					&& method.getReturnType().equals(interceptedMethod.getReturnType())
 					&& equalParameterTypes(method.getParameterTypes(), interceptedMethod.getParameterTypes())) {
