@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.douglei.tools.instances.file.resources.reader.ResourcesReader;
+import com.douglei.tools.instances.file.resource.reader.ResourceReader;
 import com.douglei.tools.utils.reflect.ClassLoadUtil;
 
 /**
@@ -20,7 +20,7 @@ public class IgnoreInterfacesProperties {
 		ignoreInterfaces_.add(Cloneable.class);
 		ignoreInterfaces_.add(Closeable.class);
 		
-		ResourcesReader reader = new ResourcesReader("ignore.interfaces.properties");
+		ResourceReader reader = new ResourceReader("ignore.interfaces.properties");
 		while(reader.ready()) {
 			ignoreInterfaces_.add(ClassLoadUtil.loadClass(reader.readLine()));
 		}
