@@ -1,5 +1,7 @@
 package com.douglei.aop;
 
+import java.io.Closeable;
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
@@ -69,7 +71,7 @@ class ProxyBeanFactory {
 		if(interfaces.length > 0) {
 			byte count = 0;
 			for (Class<?> interface_ : interfaces) {
-				if(IgnoreInterfacesProperties.isIgnore(interface_)) {
+				if(isIgnore(interface_)) {
 					count++;
 				}
 			}
@@ -79,6 +81,20 @@ class ProxyBeanFactory {
 		}
 		return false;
 	}
+	
+	// 要忽略的接口, 因为不能根据这些接口去生成动态代理, 所以要过滤掉, 防止生成动态代理时出现异常
+	private static final Class<?>[] ignoreInterfaces = {
+			Serializable.class, Cloneable.class, Closeable.class
+	};
+	private boolean isIgnore(Class<?> interface_) {
+		for (Class<?> ii : ignoreInterfaces) {
+			if(ii == interface_) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * 
