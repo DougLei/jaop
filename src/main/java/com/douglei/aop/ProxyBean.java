@@ -66,12 +66,6 @@ public final class ProxyBean {
 		interceptors.add(proxyInterceptor);
 	}
 	
-//	void removeInterceptor(ProxyInterceptor proxyInterceptor) {
-//		if(interceptors != null && interceptors.size() > 0) {
-//			interceptors.remove(proxyInterceptor);
-//		}
-//	}
-	
 	public Object getOriginObject() {
 		return originObject;
 	}

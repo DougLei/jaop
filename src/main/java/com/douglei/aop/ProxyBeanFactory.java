@@ -109,13 +109,12 @@ class ProxyBeanFactory {
 		Object result = null;
 		try {
 			intercepted = proxyBean.before_(originObject, method, args);
-			if(logger.isDebugEnabled()) {
+			if(logger.isDebugEnabled()) 
 				logger.debug("执行[{}]类的[{}]方法, {}代理", originObject.getClass().getName(), method.getName(), intercepted?"进行了":"未进行");
-			}
+			
 			result = method.invoke(originObject, args);
-			if(intercepted) {
+			if(intercepted) 
 				result = proxyBean.after_(originObject, method, args, result);
-			}
 		} catch (Throwable e) {
 			if(intercepted) {
 				proxyBean.exception_(originObject, method, args, e);
@@ -124,13 +123,11 @@ class ProxyBeanFactory {
 				throw e;// 没有被代理, 则遇到异常, 直接抛出
 			}
 		}finally {
-			if(intercepted) {
+			if(intercepted) 
 				proxyBean.finally_(originObject, method, args);
-			}
 		}
-		if(logger.isDebugEnabled()) {
+		if(logger.isDebugEnabled()) 
 			logger.debug("执行[{}]类的[{}]方法, 返回结果为[{}]", originObject.getClass().getName(), method.getName(), result);
-		}
 		return result;
 	}
 }
