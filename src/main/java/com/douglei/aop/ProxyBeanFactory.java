@@ -9,8 +9,6 @@ import java.lang.reflect.Proxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.douglei.tools.utils.ExceptionUtil;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -105,26 +103,20 @@ class ProxyBeanFactory {
 	 * @throws Throwable 
 	 */
 	private Object coreInvoke(Object originObject, Method method, Object[] args) throws Throwable {
-		boolean intercepted = false;
+		if(!proxyBean.before_(originObject, method, args))
+			return method.invoke(originObject, args);
+		
 		Object result = null;
 		try {
-			intercepted = proxyBean.before_(originObject, method, args);
 			if(logger.isDebugEnabled()) 
-				logger.debug("执行[{}]类的[{}]方法, {}代理", originObject.getClass().getName(), method.getName(), intercepted?"进行了":"未进行");
+				logger.debug("执行[{}]类的[{}]代理方法", originObject.getClass().getName(), method.getName());
 			
 			result = method.invoke(originObject, args);
-			if(intercepted) 
-				result = proxyBean.after_(originObject, method, args, result);
+			result = proxyBean.after_(originObject, method, args, result);
 		} catch (Throwable e) {
-			if(intercepted) {
-				proxyBean.exception_(originObject, method, args, e);
-			}else {
-				logger.error(ExceptionUtil.getExceptionDetailMessage(e));
-				throw e;// 没有被代理, 则遇到异常, 直接抛出
-			}
+			proxyBean.exception_(originObject, method, args, e);
 		}finally {
-			if(intercepted) 
-				proxyBean.finally_(originObject, method, args);
+			proxyBean.finally_(originObject, method, args);
 		}
 		if(logger.isDebugEnabled()) 
 			logger.debug("执行[{}]类的[{}]方法, 返回结果为[{}]", originObject.getClass().getName(), method.getName(), result);

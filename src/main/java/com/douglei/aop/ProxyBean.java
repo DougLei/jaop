@@ -18,15 +18,21 @@ public final class ProxyBean {
 		this.proxy = proxy;
 	}
 	
+	/**
+	 * 
+	 * @param originObject
+	 * @param method
+	 * @param args
+	 * @return 是否要代理指定的方法
+	 */
 	boolean before_(Object originObject, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
 				// 第一是要判断该方法是否需要被增强
 				// 第二是要判断before_预处理是否返回true, 即预处理是否正常
 				// 满足这两个条件, 即可对该方法进行代理增强
-				if(!((interceptor.proxyAllMethod() || interceptor.isInterceptMethod(method)) && interceptor.before_(originObject, method, args))) {
+				if(!((interceptor.proxyAllMethod() || interceptor.isInterceptMethod(method)) && interceptor.before_(originObject, method, args))) 
 					return false;
-				}
 			}
 		}
 		return true;
