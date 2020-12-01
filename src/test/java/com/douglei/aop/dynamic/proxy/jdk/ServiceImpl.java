@@ -1,6 +1,6 @@
 package com.douglei.aop.dynamic.proxy.jdk;
 
-import com.douglei.aop.ProxyBeanContext;
+import com.douglei.aop.ProxyBeanContainer;
 import com.douglei.aop.dynamic.proxy.TransactionTest;
 
 public class ServiceImpl implements IService {
@@ -9,7 +9,7 @@ public class ServiceImpl implements IService {
 	@Override
 	public void add() {
 		System.out.println("ServiceImpl.add()");
-		ProxyBeanContext.getProxy(ServiceImpl.class).delete();
+		ProxyBeanContainer.getProxy(ServiceImpl.class).delete();
 	}
 
 	@TransactionTest

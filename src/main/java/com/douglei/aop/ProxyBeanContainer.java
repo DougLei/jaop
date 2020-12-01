@@ -12,16 +12,12 @@ import org.slf4j.LoggerFactory;
 import com.douglei.tools.utils.reflect.ConstructorUtil;
 
 /**
- * 
+ * 代理bean的容器
  * @author DougLei
  */
-public class ProxyBeanContext {
-	private static final Logger logger = LoggerFactory.getLogger(ProxyBeanContext.class);
-	
-	/**
-	 * 代理bean的容器
-	 */
-	private static Map<Class<?>, ProxyBean> PROXY_BEAN_MAP = new HashMap<Class<?>, ProxyBean>(16);
+public class ProxyBeanContainer {
+	private static final Logger logger = LoggerFactory.getLogger(ProxyBeanContainer.class);
+	private static Map<Class<?>, ProxyBean> PROXY_BEAN_CONTAINER = new HashMap<Class<?>, ProxyBean>();
 	
 	// ---------------------------------------------------------------------------------------
 	// 创建代理Bean, 返回创建的代理对象
@@ -55,7 +51,7 @@ public class ProxyBeanContext {
 	}
 	
 	// ---------------------------------------------------------------------------------------
-	// 创建代理Bean, 返回创建的代理对象, 并将创建的代理bean添加到PROXY_BEAN_MAP中
+	// 创建代理Bean, 返回创建的代理对象, 并将创建的代理bean添加到PROXY_BEAN_CONTAINER中
 	// ---------------------------------------------------------------------------------------
 	public static ProxyBean createAndAddProxy(Class<?> clz, ProxyInterceptor... interceptors) {
 		return createAndAddProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
@@ -98,17 +94,17 @@ public class ProxyBeanContext {
 	}
 	
 	/**
-	 * 创建代理对象, 并将创建的代理bean添加到PROXY_BEAN_MAP中
+	 * 创建代理对象, 并将创建的代理bean添加到PROXY_BEAN_CONTAINER中
 	 * @param clz
 	 * @param object
 	 * @return 创建的代理bean
 	 */
 	private static ProxyBean createAndAddProxy(Class<?> clz, Object object) {
-		if(PROXY_BEAN_MAP.containsKey(clz)) {
+		if(PROXY_BEAN_CONTAINER.containsKey(clz)) {
 			throw new RepeatedProxyException(clz.getName());
 		}
 		ProxyBean proxyBean = createProxy(clz, object);
-		PROXY_BEAN_MAP.put(clz, proxyBean);
+		PROXY_BEAN_CONTAINER.put(clz, proxyBean);
 		return proxyBean;
 	}
 	
@@ -121,7 +117,7 @@ public class ProxyBeanContext {
 	 * @return
 	 */
 	public static ProxyBean getProxyBean(Class<?> clz) {
-		return PROXY_BEAN_MAP.get(clz);
+		return PROXY_BEAN_CONTAINER.get(clz);
 	}
 	
 	/**
@@ -131,7 +127,7 @@ public class ProxyBeanContext {
 	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getProxy(Class<T> clz) {
-		ProxyBean pw = PROXY_BEAN_MAP.get(clz);
+		ProxyBean pw = PROXY_BEAN_CONTAINER.get(clz);
 		if(pw == null) {
 			throw new NotExistsProxyBeanException(clz.getName());
 		}
@@ -170,7 +166,7 @@ public class ProxyBeanContext {
 //	public static void removeInterceptor(Class<?> clz, ProxyInterceptor... interceptors) {
 //		if(interceptors != null && interceptors.length > 0) {
 //			String clzName = clz.getName();
-//			ProxyBean pw = PROXY_BEAN_MAP.get(clzName);
+//			ProxyBean pw = PROXY_BEAN_CONTAINER.get(clzName);
 //			if(pw == null) {
 //				throw new NotExistsProxyBeanException(clzName);
 //			}
@@ -187,18 +183,18 @@ public class ProxyBeanContext {
 	 * 销毁容器
 	 */
 	public static void destroy() {
-		if(PROXY_BEAN_MAP != null) {
-			if(PROXY_BEAN_MAP.size() > 0) {
-				logger.info("[{}]被销毁, 数量为[{}]", ProxyBeanContext.class.getName(), PROXY_BEAN_MAP.size());
-				if(logger.isDebugEnabled() && PROXY_BEAN_MAP.size() > 0) {
-					Set<Entry<Class<?>, ProxyBean>> entries = PROXY_BEAN_MAP.entrySet();
+		if(PROXY_BEAN_CONTAINER != null) {
+			if(PROXY_BEAN_CONTAINER.size() > 0) {
+				logger.info("[{}]被销毁, 数量为[{}]", ProxyBeanContainer.class.getName(), PROXY_BEAN_CONTAINER.size());
+				if(logger.isDebugEnabled() && PROXY_BEAN_CONTAINER.size() > 0) {
+					Set<Entry<Class<?>, ProxyBean>> entries = PROXY_BEAN_CONTAINER.entrySet();
 					entries.forEach(entry -> {
 						logger.debug("销毁Class=[{}]的ProxyBean=[{}]", entry.getKey().getName(), entry.getValue());
 					});
 				}
-				PROXY_BEAN_MAP.clear();
+				PROXY_BEAN_CONTAINER.clear();
 			}
-			PROXY_BEAN_MAP = null;
+			PROXY_BEAN_CONTAINER = null;
 		}
 	}
 }

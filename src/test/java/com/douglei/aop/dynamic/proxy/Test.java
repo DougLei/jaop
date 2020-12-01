@@ -3,7 +3,7 @@ package com.douglei.aop.dynamic.proxy;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.douglei.aop.ProxyBeanContext;
+import com.douglei.aop.ProxyBeanContainer;
 import com.douglei.aop.ProxyMethod;
 import com.douglei.aop.dynamic.proxy.jdk.ServiceImpl;
 
@@ -16,7 +16,7 @@ public class Test {
 		
 		
 		
-		ProxyBeanContext.createProxy(ServiceImpl.class, new LogProxy(list));
-		ProxyBeanContext.getProxy(ServiceImpl.class).add();
+		ProxyBeanContainer.createProxy(ServiceImpl.class, new LogProxy(list));
+		ProxyBeanContainer.getProxy(ServiceImpl.class).add();
 	}
 }
