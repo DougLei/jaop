@@ -129,7 +129,7 @@ public class ProxyBeanContainer {
 	public static <T> T getProxy(Class<T> clz) {
 		ProxyBean pw = PROXY_BEAN_CONTAINER.get(clz);
 		if(pw == null) {
-			throw new NotExistsProxyBeanException(clz.getName());
+			throw new NullPointerException("不存在class为["+clz.getName()+"]的ProxyBean");
 		}
 		return (T) pw.getProxy();
 	}
