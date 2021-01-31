@@ -2,7 +2,7 @@ package com.douglei.aop;
 
 import java.lang.reflect.Method;
 
-import com.douglei.tools.utils.reflect.ValidationUtil;
+import com.douglei.tools.reflect.ValidationUtil;
 
 /**
  * 被代理的方法

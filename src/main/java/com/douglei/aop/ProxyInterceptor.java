@@ -7,7 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.douglei.tools.utils.ExceptionUtil;
+import com.douglei.tools.ExceptionUtil;
 
 /**
  * 代理拦截器, 需要自定义实现, 增强目标方法/类
