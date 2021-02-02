@@ -64,11 +64,8 @@ public final class ProxyBean {
 	}
 	
 	void addInterceptor(ProxyInterceptor proxyInterceptor) {
-		if(interceptors == null) {
+		if(interceptors == null) 
 			interceptors = new ArrayList<ProxyInterceptor>();
-		}else if(interceptors.contains(proxyInterceptor)) {
-			throw new RepeatedProxyInterceptorException("["+originObject.getClass().getName()+"]对象已经存在["+proxyInterceptor.getClass().getName()+"]拦截器");
-		}
 		interceptors.add(proxyInterceptor);
 	}
 	

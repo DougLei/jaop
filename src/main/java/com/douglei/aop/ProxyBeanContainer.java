@@ -9,7 +9,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.douglei.tools.reflect.ConstructorUtil;
+import com.douglei.tools.reflect.ClassUtil;
 
 /**
  * 代理bean的容器
@@ -23,7 +23,7 @@ public class ProxyBeanContainer {
 	// 创建代理Bean, 返回创建的代理对象
 	// ---------------------------------------------------------------------------------------
 	public static ProxyBean createProxy(Class<?> clz, ProxyInterceptor... interceptors) {
-		return createProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
+		return createProxy(clz, ClassUtil.newInstance(clz), interceptors);
 	}
 	
 	public static ProxyBean createProxy(Object object, ProxyInterceptor... interceptors) {
@@ -32,12 +32,12 @@ public class ProxyBeanContainer {
 	
 	public static ProxyBean createProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
 		ProxyBean proxyBean = createProxy(clz, object);
-		addInterceptor(proxyBean, interceptors);
+		addInterceptors(proxyBean, interceptors);
 		return proxyBean;
 	}
 	
 	public static ProxyBean createProxy(Class<?> clz, List<ProxyInterceptor> interceptors) {
-		return createProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
+		return createProxy(clz, ClassUtil.newInstance(clz), interceptors);
 	}
 	
 	public static ProxyBean createProxy(Object object, List<ProxyInterceptor> interceptors) {
@@ -46,7 +46,7 @@ public class ProxyBeanContainer {
 	
 	public static ProxyBean createProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
 		ProxyBean proxyBean = createProxy(clz, object);
-		addInterceptor(proxyBean, interceptors);
+		addInterceptors(proxyBean, interceptors);
 		return proxyBean;
 	}
 	
@@ -54,7 +54,7 @@ public class ProxyBeanContainer {
 	// 创建代理Bean, 返回创建的代理对象, 并将创建的代理bean添加到PROXY_BEAN_CONTAINER中
 	// ---------------------------------------------------------------------------------------
 	public static ProxyBean createAndAddProxy(Class<?> clz, ProxyInterceptor... interceptors) {
-		return createAndAddProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
+		return createAndAddProxy(clz, ClassUtil.newInstance(clz), interceptors);
 	}
 	
 	public static ProxyBean createAndAddProxy(Object object, ProxyInterceptor... interceptors) {
@@ -63,12 +63,12 @@ public class ProxyBeanContainer {
 	
 	public static ProxyBean createAndAddProxy(Class<?> clz, Object object, ProxyInterceptor... interceptors) {
 		ProxyBean proxyBean = createAndAddProxy(clz, object);
-		addInterceptor(proxyBean, interceptors);
+		addInterceptors(proxyBean, interceptors);
 		return proxyBean;
 	}
 	
 	public static ProxyBean createAndAddProxy(Class<?> clz, List<ProxyInterceptor> interceptors) {
-		return createAndAddProxy(clz, ConstructorUtil.newInstance(clz), interceptors);
+		return createAndAddProxy(clz, ClassUtil.newInstance(clz), interceptors);
 	}
 	
 	public static ProxyBean createAndAddProxy(Object object, List<ProxyInterceptor> interceptors) {
@@ -77,7 +77,7 @@ public class ProxyBeanContainer {
 	
 	public static ProxyBean createAndAddProxy(Class<?> clz, Object object, List<ProxyInterceptor> interceptors) {
 		ProxyBean proxyBean = createAndAddProxy(clz, object);
-		addInterceptor(proxyBean, interceptors);
+		addInterceptors(proxyBean, interceptors);
 		return proxyBean;
 	}
 	
@@ -100,9 +100,9 @@ public class ProxyBeanContainer {
 	 * @return 创建的代理bean
 	 */
 	private static ProxyBean createAndAddProxy(Class<?> clz, Object object) {
-		if(PROXY_BEAN_CONTAINER.containsKey(clz)) {
+		if(PROXY_BEAN_CONTAINER.containsKey(clz)) 
 			throw new RepeatedProxyException(clz.getName());
-		}
+		
 		ProxyBean proxyBean = createProxy(clz, object);
 		PROXY_BEAN_CONTAINER.put(clz, proxyBean);
 		return proxyBean;
@@ -128,34 +128,21 @@ public class ProxyBeanContainer {
 	@SuppressWarnings("unchecked")
 	public static <T> T getProxy(Class<T> clz) {
 		ProxyBean pw = PROXY_BEAN_CONTAINER.get(clz);
-		if(pw == null) {
+		if(pw == null) 
 			throw new NullPointerException("不存在class为["+clz.getName()+"]的ProxyBean");
-		}
+		
 		return (T) pw.getProxy();
 	}
 
 	// ---------------------------------------------------------------------------------------
 	// 添加/删除 interceptor
 	// ---------------------------------------------------------------------------------------
-	private static void addInterceptor(ProxyBean proxyBean, ProxyInterceptor... interceptors) {
-		if(proxyBean == null) {
-			throw new NullPointerException("proxyBean不能为空");
-		}
-		if(interceptors == null || interceptors.length == 0) {
-			throw new NullPointerException("至少添加一个代理拦截器["+ProxyInterceptor.class.getName()+"]");
-		}
-		for (ProxyInterceptor interceptor : interceptors) {
+	private static void addInterceptors(ProxyBean proxyBean, ProxyInterceptor... interceptors) {
+		for (ProxyInterceptor interceptor : interceptors) 
 			proxyBean.addInterceptor(interceptor);
-		}
 	}
 	
-	private static void addInterceptor(ProxyBean proxyBean, List<ProxyInterceptor> interceptors) {
-		if(proxyBean == null) {
-			throw new NullPointerException("proxyBean不能为空");
-		}
-		if(interceptors == null || interceptors.size() == 0) {
-			throw new NullPointerException("至少添加一个代理拦截器["+ProxyInterceptor.class.getName()+"]");
-		}
+	private static void addInterceptors(ProxyBean proxyBean, List<ProxyInterceptor> interceptors) {
 		proxyBean.setInterceptors(interceptors);
 	}
 	

@@ -65,7 +65,7 @@ public abstract class ProxyInterceptor {
 	 * @throws Throwable
 	 */
 	protected void exception_(Object originObject, Method method, Object[] args, Throwable t) throws Throwable {
-		logger.error(ExceptionUtil.getExceptionDetailMessage(t));
+		logger.error(ExceptionUtil.getStackTrace(t));
 		throw t;
 	}
 	

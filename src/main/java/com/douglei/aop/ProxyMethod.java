@@ -2,7 +2,7 @@ package com.douglei.aop;
 
 import java.lang.reflect.Method;
 
-import com.douglei.tools.reflect.ValidationUtil;
+import com.douglei.tools.reflect.ClassUtil;
 
 /**
  * 被代理的方法
@@ -23,7 +23,7 @@ public final class ProxyMethod {
 	 */
 	boolean equalMethod(Method interceptedMethod) {
 		// 如果被拦截的方法来自接口, 还要判断一下定义时要拦截的方法所在的类, 是否实现了这个接口 
-		if(interceptedMethod.getDeclaringClass().isInterface() && ValidationUtil.isImplementInterface(method.getDeclaringClass(), interceptedMethod.getDeclaringClass())) {
+		if(interceptedMethod.getDeclaringClass().isInterface() && ClassUtil.isImplementInterface(method.getDeclaringClass(), interceptedMethod.getDeclaringClass())) {
 			if(method.getName().equals(interceptedMethod.getName()) 
 					&& method.getReturnType().equals(interceptedMethod.getReturnType())
 					&& equalParameterTypes(method.getParameterTypes(), interceptedMethod.getParameterTypes())) {

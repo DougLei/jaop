@@ -5,9 +5,9 @@ package com.douglei.aop;
  * @author DougLei
  */
 class RepeatedProxyException extends RuntimeException{
-	private static final long serialVersionUID = -865625707459631863L;
+	private static final long serialVersionUID = 7804207408960519257L;
 
-	public RepeatedProxyException(String clzName) {
-		super("["+clzName+"]已经存在代理对象");
+	public RepeatedProxyException(String clazz) {
+		super("["+clazz+"]已经存在代理对象");
 	}
 }

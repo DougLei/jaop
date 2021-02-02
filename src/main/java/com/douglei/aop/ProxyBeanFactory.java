@@ -86,9 +86,8 @@ class ProxyBeanFactory {
 	};
 	private boolean isIgnore(Class<?> interface_) {
 		for (Class<?> ii : ignoreInterfaces) {
-			if(ii == interface_) {
+			if(ii == interface_) 
 				return true;
-			}
 		}
 		return false;
 	}
