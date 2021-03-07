@@ -13,10 +13,10 @@ import com.douglei.aop.ProxyMethod;
 public class LogProxy extends ProxyInterceptor {
 
 	public LogProxy(ProxyMethod method) {
-		super(null, method);
+		super(method);
 	}
 	public LogProxy(List<ProxyMethod> methods) {
-		super(null, methods);
+		super(methods);
 	}
 
 	@Override

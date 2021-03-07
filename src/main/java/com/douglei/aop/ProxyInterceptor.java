@@ -15,20 +15,16 @@ import com.douglei.tools.ExceptionUtil;
  */
 public abstract class ProxyInterceptor {
 	private static final Logger logger = LoggerFactory.getLogger(ProxyInterceptor.class);
+	private List<ProxyMethod> methods;
 	
-	protected Class<?> clz;
-	protected List<ProxyMethod> methods;
-	
-	public ProxyInterceptor(Class<?> clz, ProxyMethod method) {
-		this.clz = clz;
+	public ProxyInterceptor(ProxyMethod method) {
 		if(method != null) {
 			methods = new ArrayList<ProxyMethod>(1);
 			methods.add(method);
 		}
 	}
 	
-	public ProxyInterceptor(Class<?> clz, List<ProxyMethod> methods) {
-		this.clz = clz;
+	public ProxyInterceptor(List<ProxyMethod> methods) {
 		this.methods = methods;
 	}
 	
@@ -92,9 +88,9 @@ public abstract class ProxyInterceptor {
 	 * @return
 	 */
 	final boolean isInterceptMethod(Method interceptedMethod) {
-		if(logger.isDebugEnabled()) {
+		if(logger.isDebugEnabled()) 
 			logger.debug("拦截的方法[{}]来自[{}]", interceptedMethod, interceptedMethod.getDeclaringClass());
-		}
+		
 		for (ProxyMethod proxyMethod : methods) {
 			logger.debug("与[{}]方法进行匹配判断", proxyMethod);
 			if(proxyMethod.equalMethod(interceptedMethod)) {
@@ -108,6 +104,6 @@ public abstract class ProxyInterceptor {
 	
 	@Override
 	public String toString() {
-		return "ProxyInterceptor [clz=" + clz.getName() + ", methods=" + methods + "]";
+		return "ProxyInterceptor [methods=" + methods + "]";
 	}
 }

@@ -5,8 +5,7 @@ import java.lang.reflect.Method;
 import com.douglei.tools.reflect.ClassUtil;
 
 /**
- * 被代理的方法
- * 包装了 java.lang.reflect.Method
+ * 被代理的方法; 包装了 java.lang.reflect.Method
  * @author DougLei
  */
 public final class ProxyMethod {
