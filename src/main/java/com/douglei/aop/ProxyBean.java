@@ -9,22 +9,15 @@ import java.util.List;
  * @author DougLei
  */
 public final class ProxyBean {
-	private Object originObject;// 被代理的源目标对象
-	private Object proxy;// 代理对象
+	private Object originObject;// 被代理的源对象实例
+	private Object proxyObject;// 代理对象实例
 	private List<ProxyInterceptor> interceptors;// 代理拦截器链
 	
-	ProxyBean(Object originObject, Object proxy) {
+	ProxyBean(Object originObject, Object proxyObject) {
 		this.originObject = originObject;
-		this.proxy = proxy;
+		this.proxyObject = proxyObject;
 	}
 	
-	/**
-	 * 
-	 * @param originObject
-	 * @param method
-	 * @param args
-	 * @return 是否要代理指定的方法
-	 */
 	boolean before_(Object originObject, Method method, Object[] args) {
 		if(interceptors != null) {
 			for (ProxyInterceptor interceptor : interceptors) {
@@ -40,26 +33,23 @@ public final class ProxyBean {
 
 	Object after_(Object originObject, Method method, Object[] args, Object result) throws Throwable {
 		if(interceptors != null) {
-			for (ProxyInterceptor interceptor : interceptors) {
+			for (ProxyInterceptor interceptor : interceptors)
 				result = interceptor.after_(originObject, method, args, result);
-			}
 		}
 		return result;
 	}
 
 	void exception_(Object originObject, Method method, Object[] args, Throwable t) throws Throwable {
 		if(interceptors != null) {
-			for (ProxyInterceptor interceptor : interceptors) {
+			for (ProxyInterceptor interceptor : interceptors)
 				interceptor.exception_(originObject, method, args, t);
-			}
 		}
 	}
 	
 	void finally_(Object originObject, Method method, Object[] args) {
 		if(interceptors != null) {
-			for (ProxyInterceptor interceptor : interceptors) {
+			for (ProxyInterceptor interceptor : interceptors)
 				interceptor.finally_(originObject, method, args);
-			}
 		}
 	}
 	
@@ -68,22 +58,29 @@ public final class ProxyBean {
 			interceptors = new ArrayList<ProxyInterceptor>();
 		interceptors.add(proxyInterceptor);
 	}
+	void setInterceptors(List<ProxyInterceptor> interceptors) {
+		this.interceptors = interceptors;
+	}
 	
+	
+	/**
+	 * 获取被代理的源对象实例
+	 * @return
+	 */
 	public Object getOriginObject() {
 		return originObject;
 	}
-	public Object getProxy() {
-		return proxy;
-	}
-	List<ProxyInterceptor> getInterceptors() {
-		return interceptors;
-	}
-	void setInterceptors(List<ProxyInterceptor> interceptors) {
-		this.interceptors = interceptors;
+	
+	/**
+	 * 获取代理对象实例
+	 * @return
+	 */
+	public Object getProxyObject() {
+		return proxyObject;
 	}
 
 	@Override
 	public String toString() {
-		return "ProxyBean [originObject=" + originObject + ", proxy=" + proxy + ", interceptors=" + interceptors + "]";
+		return "ProxyBean [originObject=" + originObject + ", proxyObject=" + proxyObject + ", interceptors=" + interceptors + "]";
 	}
 }

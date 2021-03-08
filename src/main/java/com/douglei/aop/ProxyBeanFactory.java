@@ -19,27 +19,22 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 class ProxyBeanFactory {
 	private static final Logger logger = LoggerFactory.getLogger(ProxyBeanFactory.class);
-	
 	private ProxyBean proxyBean;
 
-	public ProxyBean getProxyBean() {
-		return proxyBean;
-	}
-	
 	/**
 	 * 创建代理对象
 	 * @param clz
 	 * @param originObject
 	 * @return
 	 */
-	public <T> T createProxy(Class<T> clz, Object originObject) {
-		T proxy = newProxyInstance(clz, originObject);
-		proxyBean = new ProxyBean(originObject, proxy);
-		return (T) proxy;
+	public <T> T createProxyObject(Class<T> clz, Object originObject) {
+		T proxyObject = newProxyObject(clz, originObject);
+		this.proxyBean = new ProxyBean(originObject, proxyObject);
+		return (T) proxyObject;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T> T newProxyInstance(Class<T> clz, Object originObject) {
+	private <T> T newProxyObject(Class<T> clz, Object originObject) {
 		if(isCreateDynamicProxyByInterface(clz.getInterfaces())) {
 			return (T) Proxy.newProxyInstance(clz.getClassLoader(), clz.getInterfaces(), new InvocationHandler() {
 				@Override
@@ -120,5 +115,13 @@ class ProxyBeanFactory {
 		if(logger.isDebugEnabled()) 
 			logger.debug("执行[{}]类的[{}]方法, 返回结果为[{}]", originObject.getClass().getName(), method.getName(), result);
 		return result;
+	}
+	
+	/**
+	 * 获取代理Bean实例
+	 * @return
+	 */
+	public ProxyBean getProxyBean() {
+		return proxyBean;
 	}
 }

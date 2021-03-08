@@ -89,7 +89,7 @@ public class ProxyBeanContainer {
 	 */
 	private static ProxyBean createProxy(Class<?> clz, Object object) {
 		ProxyBeanFactory pbf = new ProxyBeanFactory();
-		pbf.createProxy(clz, object);
+		pbf.createProxyObject(clz, object);
 		return pbf.getProxyBean();
 	}
 	
@@ -101,7 +101,7 @@ public class ProxyBeanContainer {
 	 */
 	private static ProxyBean createAndAddProxy(Class<?> clz, Object object) {
 		if(PROXY_BEAN_CONTAINER.containsKey(clz)) 
-			throw new RepeatedProxyException(clz.getName());
+			throw new JAopException("["+clz.getName()+"]已存在代理对象");
 		
 		ProxyBean proxyBean = createProxy(clz, object);
 		PROXY_BEAN_CONTAINER.put(clz, proxyBean);
@@ -131,7 +131,7 @@ public class ProxyBeanContainer {
 		if(pw == null) 
 			throw new NullPointerException("不存在class为["+clz.getName()+"]的ProxyBean");
 		
-		return (T) pw.getProxy();
+		return (T) pw.getProxyObject();
 	}
 
 	// ---------------------------------------------------------------------------------------
@@ -181,7 +181,6 @@ public class ProxyBeanContainer {
 				}
 				PROXY_BEAN_CONTAINER.clear();
 			}
-			PROXY_BEAN_CONTAINER = null;
 		}
 	}
 }
